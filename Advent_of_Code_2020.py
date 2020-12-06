@@ -3,7 +3,7 @@
 
 # # Setup
 
-# In[1]:
+# In[88]:
 
 
 get_ipython().system(' jupyter nbconvert --to python Advent_of_Code_2020.ipynb')
@@ -53,7 +53,7 @@ import itertools as it
 # In[7]:
 
 
-def aoc_1a(inp=inp, sum_is=2020):
+def aoc_1_1(inp=inp, sum_is=2020):
     list_of_numbers = [int(n) for n in inp.splitlines()]
     check = lambda x, y: x + y == sum_is
     for pair in it.permutations(list_of_numbers, 2):
@@ -67,7 +67,7 @@ def aoc_1a(inp=inp, sum_is=2020):
 # In[8]:
 
 
-aoc_1a()
+aoc_1_1()
 
 
 # ## 1.2
@@ -85,7 +85,7 @@ def multiply_nums(nums):
 # In[10]:
 
 
-def aoc_1b(inp=inp, n_numbers=3, sum_is=2020):
+def aoc_1_2(inp=inp, n_numbers=3, sum_is=2020):
     list_of_numbers = [int(n) for n in inp.splitlines()]
     check = lambda nums: sum(nums) == sum_is
     for nums in it.permutations(list_of_numbers, n_numbers):
@@ -99,7 +99,7 @@ def aoc_1b(inp=inp, n_numbers=3, sum_is=2020):
 # In[11]:
 
 
-aoc_1b()
+aoc_1_2()
 
 
 # # 2
@@ -143,7 +143,7 @@ def check_line(line):
 # In[16]:
 
 
-def aoc2a(inp=inp):
+def aoc_2_1(inp=inp):
     lines = inp.splitlines()
     return sum(check_line(line) for line in lines)
 
@@ -151,7 +151,7 @@ def aoc2a(inp=inp):
 # In[17]:
 
 
-aoc2a()
+aoc_2_1()
 
 
 # ## 2.2
@@ -168,7 +168,7 @@ def check_line_2(line):
 # In[19]:
 
 
-def aoc2b(inp=inp):
+def aoc_2_2(inp=inp):
     lines = inp.splitlines()
     return sum(check_line_2(line) for line in lines)
 
@@ -176,7 +176,7 @@ def aoc2b(inp=inp):
 # In[20]:
 
 
-aoc2b()
+aoc_2_2()
 
 
 # # 3
