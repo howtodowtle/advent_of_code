@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[60]:
 
 
-get_ipython().system(' jupyter nbconvert --to python Advent_of_Code.ipynb')
+get_ipython().system(' jupyter nbconvert --to python Advent_of_Code_2020.ipynb')
 
 
 # # 1
@@ -234,7 +234,7 @@ inp = """1962
 import itertools as it
 
 
-# In[10]:
+# In[6]:
 
 
 def aoc_1a(inp=inp, sum_is=2020):
@@ -248,7 +248,7 @@ def aoc_1a(inp=inp, sum_is=2020):
     return None
 
 
-# In[11]:
+# In[7]:
 
 
 aoc_1a()
@@ -256,7 +256,7 @@ aoc_1a()
 
 # ## 1.2
 
-# In[12]:
+# In[8]:
 
 
 def multiply_nums(nums):
@@ -266,7 +266,7 @@ def multiply_nums(nums):
     return product
 
 
-# In[13]:
+# In[9]:
 
 
 def aoc_1b(inp=inp, n_numbers=3, sum_is=2020):
@@ -280,7 +280,7 @@ def aoc_1b(inp=inp, n_numbers=3, sum_is=2020):
     return None
 
 
-# In[14]:
+# In[10]:
 
 
 aoc_1b()
@@ -290,7 +290,7 @@ aoc_1b()
 
 # ## 2.1
 
-# In[29]:
+# In[11]:
 
 
 inp = """5-10 b: bhbjlkbbbbbbb
@@ -1296,24 +1296,24 @@ inp = """5-10 b: bhbjlkbbbbbbb
 """
 
 
-# In[30]:
+# In[12]:
 
 
 import re
 
 
-# In[31]:
+# In[13]:
 
 
 def parse_line(line):
-    min_= int(line.split("-")[0])
+    min_ = int(line.split("-")[0])
     max_ = int(re.findall(r"\d+-(\d+) \w: \w+", line)[0])
     letter = re.findall(r"\d+-\d+ (\w): \w+", line)[0]
     passwd = re.findall(r"\d+-\d+ \w: (\w+)", line)[0]
     return min_, max_, letter, passwd
 
 
-# In[32]:
+# In[14]:
 
 
 def check_line(line):
@@ -1322,7 +1322,7 @@ def check_line(line):
     return min_ <= this_many <= max_
 
 
-# In[33]:
+# In[15]:
 
 
 def aoc2a(inp=inp):
@@ -1330,7 +1330,7 @@ def aoc2a(inp=inp):
     return sum(check_line(line) for line in lines)
 
 
-# In[34]:
+# In[16]:
 
 
 aoc2a()
@@ -1338,7 +1338,7 @@ aoc2a()
 
 # ## 2.2
 
-# In[35]:
+# In[17]:
 
 
 def check_line_2(line):
@@ -1347,7 +1347,7 @@ def check_line_2(line):
     return (lp1 or lp2) and not (lp1 and lp2)
 
 
-# In[36]:
+# In[18]:
 
 
 def aoc2b(inp=inp):
@@ -1355,7 +1355,7 @@ def aoc2b(inp=inp):
     return sum(check_line_2(line) for line in lines)
 
 
-# In[37]:
+# In[19]:
 
 
 aoc2b()
@@ -1365,7 +1365,7 @@ aoc2b()
 
 # ## 3.1
 
-# In[38]:
+# In[20]:
 
 
 inp = """.#......##..#.....#....#.#.#...
@@ -1694,13 +1694,13 @@ inp = """.#......##..#.....#....#.#.#...
 """
 
 
-# In[39]:
+# In[21]:
 
 
 import itertools as it
 
 
-# In[40]:
+# In[22]:
 
 
 def aoc_3_1(inp=inp, debug=False):
@@ -1715,7 +1715,7 @@ def aoc_3_1(inp=inp, debug=False):
     return path.count("#")
 
 
-# In[41]:
+# In[23]:
 
 
 aoc_3_1()
@@ -1723,7 +1723,7 @@ aoc_3_1()
 
 # ## 3.2
 
-# In[42]:
+# In[24]:
 
 
 test_inp = """..##.......
@@ -1739,7 +1739,7 @@ test_inp = """..##.......
 .#..#...#.#"""
 
 
-# In[43]:
+# In[25]:
 
 
 def aoc_3_2_helper(right=3, down=1, inp=inp, debug=False):
@@ -1757,7 +1757,7 @@ def aoc_3_2_helper(right=3, down=1, inp=inp, debug=False):
     return path.count("#")
 
 
-# In[44]:
+# In[26]:
 
 
 def aoc_3_2(rights=(1, 3, 5, 7, 1), downs=(1, 1, 1, 1, 2), inp=inp, debug=False):
@@ -1771,13 +1771,13 @@ def aoc_3_2(rights=(1, 3, 5, 7, 1), downs=(1, 1, 1, 1, 2), inp=inp, debug=False)
     return product
 
 
-# In[45]:
+# In[27]:
 
 
 aoc_3_2(inp=test_inp, debug=True)
 
 
-# In[46]:
+# In[28]:
 
 
 aoc_3_2(inp=inp, debug=True)
@@ -1787,7 +1787,7 @@ aoc_3_2(inp=inp, debug=True)
 
 # ## 4.1
 
-# In[1]:
+# In[29]:
 
 
 test_inp = """ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
@@ -1805,7 +1805,7 @@ hcl:#cfa07d eyr:2025 pid:166559648
 iyr:2011 ecl:brn hgt:59in"""
 
 
-# In[13]:
+# In[30]:
 
 
 inp = """byr:1971
@@ -2768,52 +2768,52 @@ ecl:brn eyr:2024
 """
 
 
-# In[9]:
+# In[31]:
 
 
 KEYS = set(("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid", "cid"))
 
 
-# In[10]:
+# In[32]:
 
 
 OPT_KEYS = set(("cid",))
 
 
-# In[11]:
+# In[33]:
 
 
 REQ_KEYS = KEYS.difference(OPT_KEYS)
 
 
-# In[12]:
+# In[34]:
 
 
 KEYS, OPT_KEYS, REQ_KEYS
 
 
-# In[21]:
+# In[35]:
 
 
 def split_inp(inp=inp):
     yield from inp.split("\n\n")
 
 
-# In[22]:
+# In[36]:
 
 
-def check_passport(pp, required_keys=REQ_KEYS):
-    return all([f"{k}:" in pp for k in required_keys])
+def check_passport(pp):
+    return all([f"{k}:" in pp for k in REQ_KEYS])
 
 
-# In[26]:
+# In[37]:
 
 
 def aoc_4_1(inp=inp):
     return sum(check_passport(pp) for pp in split_inp(inp))
 
 
-# In[27]:
+# In[38]:
 
 
 aoc_4_1()
@@ -2821,31 +2821,31 @@ aoc_4_1()
 
 # ## 4.2
 
-# In[30]:
+# In[39]:
 
 
 from functools import partial
 
 
-# In[32]:
+# In[40]:
 
 
 import re
 
 
-# In[28]:
+# In[41]:
 
 
 REQ_KEYS = ("byr", "ecl", "eyr", "hcl", "hgt", "iyr", "pid")
 
 
-# In[47]:
+# In[42]:
 
 
 ECLS = ("amb", "blu", "brn", "gry", "grn", "hzl", "oth")
 
 
-# In[29]:
+# In[43]:
 
 
 def year_check(y, miny, maxy, digits=4):
@@ -2855,7 +2855,7 @@ def year_check(y, miny, maxy, digits=4):
         return False
 
 
-# In[50]:
+# In[44]:
 
 
 def check_height(hgt):
@@ -2874,7 +2874,7 @@ def check_height(hgt):
         return 59 <= val <= 76
 
 
-# In[137]:
+# In[45]:
 
 
 RULES = {
@@ -2888,7 +2888,7 @@ RULES = {
 }
 
 
-# In[65]:
+# In[46]:
 
 
 def parse_passport(pp):
@@ -2898,7 +2898,7 @@ def parse_passport(pp):
     return pp_dict
 
 
-# In[141]:
+# In[47]:
 
 
 def check_passport_2(pp):
@@ -2909,14 +2909,14 @@ def check_passport_2(pp):
     return all(RULES[field](value) for field, value in fields.items())
 
 
-# In[142]:
+# In[48]:
 
 
 def aoc_4_2(inp=inp):
     return sum(check_passport_2(pp) for pp in split_inp(inp))
 
 
-# In[144]:
+# In[49]:
 
 
 aoc_4_2()
@@ -2932,7 +2932,7 @@ aoc_4_2()
 # BBFFBBFRLL: row 102, column 4, seat ID 820.
 # ```
 
-# In[41]:
+# In[50]:
 
 
 test_inp = """BFFFBBFRRR
@@ -2940,7 +2940,7 @@ FFFBBBFRRR
 BBFFBBFRLL"""
 
 
-# In[2]:
+# In[51]:
 
 
 inp = """BFBFFFBLRL
@@ -3783,19 +3783,7 @@ FFFBBFBRRL
 """
 
 
-# In[5]:
-
-
-l = lines[0]
-
-
-# In[6]:
-
-
-l
-
-
-# In[7]:
+# In[52]:
 
 
 def split_line(line: str):
@@ -3803,7 +3791,7 @@ def split_line(line: str):
     return row_b, col_b
 
 
-# In[49]:
+# In[53]:
 
 
 def map_to_bin(s, map_0="L", map_1="R"):
@@ -3811,7 +3799,7 @@ def map_to_bin(s, map_0="L", map_1="R"):
     return int(remapped, 2)
 
 
-# In[53]:
+# In[54]:
 
 
 def calc_seat_num(line):
@@ -3820,105 +3808,29 @@ def calc_seat_num(line):
     return row * 8 + col
 
 
-# In[54]:
+# In[55]:
 
 
 def aoc_5_1(inp=inp):
     return max(calc_seat_num(line) for line in inp.splitlines())
 
 
-# In[55]:
+# In[56]:
 
 
 aoc_5_1()
 
 
-# - start figuring out the mapping with only the cols first
-
-# In[10]:
-
-
-r, c = split_line(l)
-
-
-# In[14]:
-
-
-c = "RLL"
-
-
-# In[44]:
-
-
-cd = map_to_bin(c)
-
-
-# In[45]:
-
-
-cd
-
-
-# In[46]:
-
-
-bin(cd)
-
-
-# In[47]:
-
-
-int("100", 2)
-
-
-# In[52]:
-
-
-for l in test_inp.splitlines():
-    r, c = split_line(l)
-    print(l)
-    rr = map_to_bin(r, "F", "B")
-    print(f"{r} --> {rr}")
-    cc = map_to_bin(c)
-    print(f"{c} --> {cc}")
-    print(rr * 8 + cc)
-    print("*" * 10)
-
-
 # ## 5.2
 
-# In[56]:
+# In[57]:
 
 
 def all_seats(inp):
     return (calc_seat_num(line) for line in inp.splitlines())
 
 
-# In[57]:
-
-
-als = all_seats(inp)
-
-
 # In[58]:
-
-
-alsl = list(als)
-
-
-# In[59]:
-
-
-min(alsl)
-
-
-# In[60]:
-
-
-max(alsl)
-
-
-# In[63]:
 
 
 def aoc_5_2(inp=inp):
@@ -3928,10 +3840,2124 @@ def aoc_5_2(inp=inp):
     return my_seat
 
 
-# In[64]:
+# In[59]:
 
 
 aoc_5_2()
+
+
+# # 6
+
+# ## 6.1
+
+# In[1]:
+
+
+inp = """gsvdkufnoawjmhp
+wvhusojpnikgfadb
+vshnpfedgwajkou
+aujodhskfvnpgw
+okpdnwhsfvjguqa
+
+juedvq
+vqeduj
+veqdju
+eqduvj
+
+cdajbuernxm
+mnucjearxbd
+axrmdejuncb
+jrebucmdxna
+
+kutplibdoqzfvhw
+qcewmrkdvhl
+qobdwvlkgxhpasyjn
+
+psbjhnatxe
+pnaxesjhbt
+tpxhbnseaj
+
+yskvjqacinfdrphwltxgzomueb
+jwprnxzvkeofthuqbyimadgslc
+
+hzwepdg
+lwf
+wy
+lw
+rw
+
+sdgateubqmznhjk
+xyphltd
+
+dbhl
+hdlb
+dbhl
+hbld
+
+inkxywsbgjuvpztrecadqmhf
+qkaxszcujwvmbhdietpgr
+krupsdgibzecxwvhqatmj
+qtpxerobhisgcumkwjvdaz
+
+bgakcmh
+gxasvzu
+
+cjtrvhinaqsbpk
+jvxtspaqbhkfnrc
+
+nab
+bex
+qmkudf
+
+uot
+out
+tuo
+uto
+out
+
+sbtkzf
+hbkfzs
+szbkf
+fuzksbx
+jskrzbf
+
+dkphfoybsagcrnq
+oybunchapqrdks
+bokpysdhqnarc
+
+bchumknwairvlf
+cvbuhwzirkalfy
+
+bwnseiaoqyjf
+josqanfbew
+nealmqbfwojs
+jqnbfaoesw
+
+sowzuji
+wojizu
+wzojiu
+jwozui
+ujiwoz
+
+kcopqbt
+tpkudorbc
+pmtwogjb
+
+uxkfthszqdbelomwri
+tlusezbomwfqrdxhki
+rsdfkbteoqilzmxhuw
+bwkqmdsxhrfulietoz
+izkwomsdlbfxetqhru
+
+kzhwyodlvpt
+kvfhldwpo
+lvhypokdw
+opwjhvdkcl
+kpahtdolvw
+
+cldyjpuitah
+upcthlijyda
+icdauhpytj
+haypidtucj
+jidaptcyhuo
+
+mi
+ti
+qjwiz
+oudehsxyiv
+bpirjl
+
+stlyornuk
+cxapqwie
+
+kharunjiebzvoy
+gvaihtklnqmcebf
+
+t
+lt
+t
+
+ohca
+lznkumqfgyjsbeot
+owxdivpr
+
+dy
+yo
+xsy
+yo
+pyrvh
+
+iaxp
+afpikux
+
+hpsfqrnevzxl
+fnrsvexzhqup
+
+cp
+fpc
+cp
+
+nbuojxgqckrwzspehf
+mhguoxsfkejwcq
+kedqujsomfxhwcvg
+ouqefsxchgjkw
+qcjohwxfseugk
+
+rybnlomq
+fmxsngauo
+embkon
+nlmvob
+bomhnv
+
+gptixlduzjeqkorsamwnh
+pgzwohfjkuvbtylmc
+
+thcgo
+vhrlxmo
+
+kbfgmhpzoqysac
+ockazbsmhpgqfy
+kmcqfyzhapgsxb
+qcfdlwyarzuskhmbg
+
+surovlcihp
+irvlpuhosc
+
+rd
+d
+td
+d
+
+koasgulh
+kroumtzl
+yubkwolnpj
+
+dqykvasneb
+easknpbovyjd
+
+wqvop
+nwqvpo
+wovfrqizh
+onqpwv
+
+uskotfndjeplixhycbqrmw
+mbxoewypcfdhistn
+ydtvpbfemcnsihoxw
+ynwbtosmcipxhfde
+
+urgvbqechawznsjltixody
+swdbnevcatrflguhziyoqxj
+sgiwelhanovrbjuzyqtdcx
+vyenojuhxwzbtigsdqarkcl
+
+jxcwblszo
+khrwvnbdolgjufyz
+
+n
+r
+d
+r
+bd
+
+tolrypvdwmb
+lwrmopdvybt
+rdybwmvplto
+vlwpyrbmotd
+ybolwtvprmd
+
+radvoplnq
+lrqpondva
+lpanovqrd
+lpanvoqdr
+dqorvalpn
+
+fvxca
+vacfx
+fvcxa
+
+jbeixdakgolpfhqyntw
+purbsxvjfwhetlmcnz
+
+jztfgbmnkadiehv
+djhpntcizmkgvbfe
+btegdfknizvmhjl
+igbdeztjfkhmnv
+iqvtgejanzfdbhmk
+
+jpi
+ijp
+ijp
+
+kydp
+viykd
+dgyqmftwx
+vdye
+
+sewpkrvh
+ekorswnp
+
+bplerysifmzvwoncjxqk
+nsbeqowitcpjymxvl
+
+nexbskamprd
+xsmdbkaupner
+dsbnekarctvmpx
+nkapxcbsmrlde
+ezfdhnakwrsmyxpb
+
+olnuzvxcgpdtfb
+tgzcfdbnxp
+
+vjliksorxpmwecaznu
+giuoxsvnzewljpmc
+
+fuljpkt
+cplftukj
+lfptjku
+futpjlk
+
+tqcgihveyswu
+ywvqecthgs
+cqhwetvsyg
+qvshwcegty
+gyctwqsfvhe
+
+uhezlyxwvpcidr
+hvucplszbxywer
+
+jchyntk
+revwzsm
+kdn
+
+cotikdlpxauzb
+uxzptoksqbdiw
+
+nqvruwhtombs
+tebfnykzmlgcj
+
+ciwkhzbmgfqo
+uwmzgbcoihqkfs
+fkwmziohcgbq
+
+shezgrvq
+gprveokq
+
+jvqcdiuyrnpgh
+dyjqvhrpic
+xjiklpfzmthrwdsyqv
+pdyvochrunaqjgi
+
+denpjgywacrk
+jbypwarecukdgn
+zacqyxdgejrmpwkfnh
+uwldpkrgaenjcy
+
+q
+mq
+q
+
+d
+c
+d
+d
+
+cdazeitlrpxnfqs
+nrqxelfocsihpz
+cnkveyiujlbzfgrpxq
+cqznxrfliedp
+
+qicgkpjzlxonv
+cijozlhkqxnp
+pgkcnloyxzj
+japmxlknszotc
+
+bytg
+mwetjayhgiup
+gyt
+ygt
+tyg
+
+zx
+elxz
+z
+vncto
+
+nryw
+rywn
+
+takqgijzforxpshm
+ztmrxfqgsiphjaok
+
+fsaoqe
+wcavsldeytn
+auoekhzsi
+hgseja
+
+whqyvldpintefaxgurjc
+xluqrgsvnacykptefbdhmj
+
+oylknhsgmpawziqte
+znhmatkpolsw
+pkvmtznhlwsoa
+onzamhltkpsw
+
+zs
+zs
+zs
+sz
+
+e
+a
+
+xmi
+gahfrd
+yt
+jmy
+nqy
+
+zkbtfdjom
+ot
+uoqtr
+eot
+
+g
+er
+g
+g
+
+ncvwupezd
+cnvdwzpeu
+cuwnzvedp
+cdnzevwpu
+
+bkuwcsv
+bqcsgwve
+mbhcovjsw
+qwrnbeycsv
+lisvbwc
+
+vlys
+omvzl
+ptlejv
+xylv
+vxol
+
+mqgohwtz
+rqomlcw
+
+rgopxhkslqcjmzbatnd
+phgzmojlstadqrxkbn
+
+pcbziv
+pivzbc
+jilczbpv
+
+gmrecszl
+zgrecslm
+melzcrgs
+gezcrlsm
+mcsezrlg
+
+ceotvxaydplfiu
+vbzcaxuokwd
+
+gy
+g
+
+lj
+neocbiqjt
+
+foyawivmhs
+fayowsmzrv
+mksfowvzayg
+
+sivthk
+yh
+lh
+ybhq
+hy
+
+fk
+ka
+vka
+qhjxrzmckpb
+kf
+
+s
+s
+s
+
+iyth
+tyhri
+yrtaih
+htyi
+utifydhq
+
+hwxd
+xhwd
+hxwdb
+
+kfhsvbjdwxcnt
+dbfjhsctkvw
+sogzdhjqiwmlyuvf
+
+v
+nyx
+v
+i
+
+ncimwelvbudtp
+piwvudaer
+
+aktpdrhm
+dtapkhr
+dhapktri
+taprnhdko
+krpdhta
+
+fvpaxk
+zgmrwja
+ar
+
+vxoisla
+olisvxa
+kioqvrlxjhsya
+oixgalsv
+savloix
+
+ac
+gr
+c
+tl
+c
+
+fndwqsruzagei
+dwunqfaesgzri
+bzarmfnqwuisgde
+
+jr
+rj
+jr
+jr
+
+zrevhj
+xigdmqatk
+wjlpzvsy
+
+qijznvobp
+nzbojivdpc
+vzipojnb
+
+srbtecvpixam
+hdvctplmfxuow
+
+bf
+bf
+bf
+bfex
+
+g
+g
+g
+g
+mag
+
+b
+y
+b
+
+vmbwhdfiqteglnpkxucjoa
+wmqdconxbuaetjlgphivkf
+upadfnhkwtjioqcbvxelmg
+gofjubptnmkelihwxacqvd
+
+alev
+evla
+alve
+avel
+aelv
+
+uceyogrhl
+oqcafluvhewgr
+ugcxlhorpez
+nduzshrceglox
+odmgbeucrplh
+
+ugesfliovyzja
+nlizsujfadgo
+lfguaszotij
+osznifulgadkj
+xadguljioszf
+
+kpgve
+vqsfezungalxidb
+gwteov
+gpvcyjrmeh
+
+apuonkxtc
+xithys
+hfvtsx
+
+pgtzamyqeu
+gtiuwpcqzvya
+tpqauezyg
+
+souvmglcqbekzi
+miuzvksocgqbel
+gzqkmsubevolci
+
+ndvahciz
+jaoyhepsbirw
+
+bghijfkotcxwu
+uaokxsfbleyhgqr
+hucfokpwbxg
+nbfuztgovhxk
+
+zghianxtlq
+qthdvingxalkz
+wfqnixgteza
+
+lhzcrodupwqsv
+phsvrzcldoqwu
+hogspqwcvukdz
+hwzpucdsqvrol
+
+txkqmsfbglhnoypaduiv
+navlozmpthwsbkiqxdfu
+
+gidnojlbtfpskuwavyxczr
+irvsyznbtedxougfwc
+sovxhcqdbwytzmugrinf
+
+mcjnraketsgvqyxpbuwlhzdof
+kqudanprgiejcftzlywhsoxmb
+rcxmkdqfohjzgtsalbpunywe
+
+o
+cm
+rc
+m
+
+tmkbedxgzsw
+tdgmsxbzkernw
+ktdbxzsemgw
+gwkmestbdxz
+xzdewgtmskb
+
+evpdgzcu
+gepcvzu
+vegzpuc
+vpuzgec
+cvpgeuz
+
+wfsadgtuizejmylxq
+aspmuqigbxeljdtwfy
+
+ygbtdp
+tye
+fryaitjcukhl
+ytdm
+
+jfm
+m
+m
+
+cl
+cl
+lc
+
+qbodnftrsygi
+iztorbfskqdvng
+onpsgqrdtif
+mnrofcuqwdtils
+
+mhavcgzlrtbo
+jrldgavzqbcxoh
+
+pshtdbifrvzqmklyae
+tfajgrpkidzyhslebmvq
+
+cuzbjepnvis
+isjbenvyzlcup
+nagieshzcpqmfuvbj
+ezvpsjrnciub
+
+ywgdsafzuxbrmhvqkljnoipc
+hjcntvrzwdfbxksyiqolpumag
+kwvpybmjeoualxcsqgidhfnrz
+
+zubvkn
+cuwfsnv
+
+isknfdalujeg
+hikagvpzx
+
+szgfhjtxid
+stdgjzxfih
+xghsjfdzit
+gfjixszhtd
+fzjshdtixg
+
+uibgxka
+abigukx
+xubakgi
+gxabiuky
+bkaxgui
+
+tjzor
+slaore
+gxwnoifudmcqvpk
+obhr
+tyo
+
+q
+y
+e
+r
+ifdcxzm
+
+fvtqrjsblkhuoiey
+gyfnizlqupvscobt
+bouiftlcvqsy
+qdvlyfiusgotb
+qvbycwsifluto
+
+ifmnxbcvpkylruh
+nckrmfphluixvby
+vbcmxyhurnpilfk
+suiqbvyrxcphmfnlk
+ynuxkrfvibclpmh
+
+pmvdyexsoilatqfgk
+lpidgatmqevkxyso
+gkpsaoleymqxvtdi
+gmvxeyplqdoasitk
+vkpdylstquegaiomx
+
+ymogxuswkce
+vbxznpscg
+xlcgs
+xclbdsng
+
+zovwtiy
+zrjlciov
+ksxefuvqdam
+
+cwvsx
+xeuwyhsfb
+
+hxwgolksbrdmpifye
+lwpyefxmiohdnbksgr
+gzoehypbldxikmwtrfs
+sdlwpeymxifrbghok
+glmbhykiofdxpwervs
+
+ndcphgqfuvsekaxozri
+xofkqnbschdaveruizgp
+
+ptkvdhjaw
+skhtapidwjn
+thunakpjwd
+eaglphkdtjcfw
+
+pnezvfgiouahmslkdxcrqb
+fpiqsecxaukbvzgnorjhwdm
+
+emcwblgxuvnkzrdsoyjf
+rvsxeugkmwzfncojlb
+nhbiclvskjrupgxzfeomw
+gcxlbjozeiufwnskvrm
+eonjkwbzfxgpruvcmsl
+
+ntgia
+ia
+ai
+
+scoernukhwtigpd
+bogiserhpucnkt
+
+eaipzg
+gne
+lughe
+
+tbipylmnrague
+tbargijepmhuynl
+triyzgupnbmale
+prtnumgaibley
+peblaytmgnrui
+
+rqlsepfhiv
+fvelqphsri
+ilfhvqerps
+fheqplsvir
+sfpvehirlq
+
+jciwxfbhqkadgzloprnuvsty
+qwouetsmhykavxfbjzrglc
+
+fjmz
+mjczf
+unkzjm
+
+gebyncxsphfokwm
+gmchsnbwkpfyxeo
+fybkhcesogxpwmn
+
+ud
+whjn
+
+ihm
+hmi
+
+p
+p
+yp
+sp
+
+ytrwx
+yrtxw
+
+p
+d
+
+ieltygdukac
+yiudeakg
+kpegdaiyu
+audykegi
+aeqydwiguk
+
+lb
+ei
+
+zjvctfndgiqbeu
+abfwndutvecqigz
+fznbdutevigcq
+qtvzfnueibdcg
+
+g
+i
+x
+g
+g
+
+qhm
+lq
+nq
+pqsb
+lvq
+
+qnxpslvajf
+xuavcnst
+nsyabxv
+
+ocu
+uco
+acoux
+cluo
+coun
+
+jtgzodebq
+ojztqdgbe
+oejrqzgtbda
+tjzbqedgo
+gzqtejobd
+
+ubglorcsyvmxd
+oentwfgulpqikdcbzhj
+
+jwkmxdnyvbiz
+qebnoyfz
+
+bepdfi
+ikepbof
+
+cofgekndbatpruhqmwvsiy
+bsqtrakeudopghvyfmcnw
+qgusdwvabytmfkcnehorp
+qfhruygwkvmbpaoestcdn
+prmkbuvynseatdoqwfhcg
+
+enczdvbkiyjgruqp
+bdiqvwjurpycngzk
+bnrcejupvqiwgzkyd
+pqgybrcjzkudonvi
+
+fygasxjwrb
+ijsgafwyrbx
+syjawbxgfr
+wfbrgvsjyax
+
+xtp
+bfnzuadh
+xlce
+
+rxmeqcbv
+
+fjtdihkrbyn
+htfjyinkgdrb
+fibgtkdryhnj
+hkbnjrftidy
+intbxjrkfdyh
+
+nhkiqjocfgxmrvwetd
+ghnfdjvqtxwermokci
+xnrtfkhdwcmjvoeigq
+mcvfjhwiqtnrekogdx
+imhxgjwrodtcknqvef
+
+sabwqu
+yqamws
+
+usei
+xkvnyfi
+
+rcewysztbiamhpgldj
+kibrfndmgeazcsh
+adrzgchmwjsbie
+
+pnrwvx
+lwjxnu
+vwxinb
+pfxybwng
+
+wnvxgfdkubzrmip
+kmjhoigltwbz
+
+znlgbx
+fla
+dl
+l
+l
+
+jgeqcikplduzxrwby
+kwplxgcbndjqyizuer
+ewrqujilgyxpdzcbk
+
+guteykxsqrfwhz
+mhiurkswtqbxz
+sdlqxvowujrhkz
+
+zrejn
+nzrje
+jnerz
+rzjen
+
+fvkouigderaqbjth
+eqrvwjinfltzpcuag
+
+stqcrpy
+ctsqpyr
+ptyqrsc
+ymsqrcaptb
+
+egftpqosiv
+ecjdqlnmwouf
+spxaqofre
+epogyfqi
+
+oxwgtshjqef
+pbtgjfeqhnoxw
+jfhewygoxtq
+
+jwavgo
+ogevbwdjai
+ogvahjw
+wrajvog
+ogsjwarv
+
+rpucvg
+cgpr
+htfelpc
+
+hqrwapscubelovxntd
+jisztpnbcahlfdoqmvexgk
+
+pmadwutiejznofcgvsbqyxh
+qvmzbaisgfcunwjexhpdktyo
+xtvsdnqaucyehgzbjiopwmf
+
+vjqih
+himjwdv
+hsojivb
+jtrklivehyg
+mvnaizoqpfxhj
+
+j
+j
+j
+j
+j
+
+dpnwmtvklc
+ndjpkm
+ndmpk
+ndmpk
+ndmpk
+
+ucojsptiqymhewbxvrfdkngl
+ebpjwuxrdqkmsochvfgliznt
+
+esroiaqdbxnjhut
+xibuqhmensdajo
+feukjbahdxwqnsiocv
+
+vkxzclpmtujngerawod
+azdrgcenvjxptkuolmw
+onrluajvcgewpdzkmtx
+xamlobkrvzwpjgnucdte
+tvenjdmlzpwugkoracx
+
+ywpfhztklgjmoien
+nyelduixgvwmojpzhtk
+lehpigtmoknjyzw
+gmhwzokylpnteji
+tmypejhwgzlniko
+
+fmd
+jf
+fj
+
+l
+v
+ntobg
+
+drmzvt
+rxtsfuk
+
+vxdlpjkrsz
+dgxkprvzsl
+dsklxpvzr
+pdvxzlrsk
+
+gwip
+gakpw
+
+kbcadn
+bakcd
+
+mhpstqcgvoalkwxinebryzujd
+qwhirveoczyatgjdsmkpxnl
+mejazlincwodtshxkrpgqyv
+fsaizhnkcvwolgjpdqxtmrye
+
+rxubznovy
+yvudnrbz
+zvunwcyrkb
+ntzbryuav
+ndvytuzrb
+
+utvklrxypgbnimsdofwa
+fyzliqswjmtpvdka
+
+byctfzx
+pxzf
+
+g
+ik
+ykei
+
+bcajzwogvetd
+gedbcwtzvoaj
+hcwogaxjbzvted
+eoczjagtdwbv
+atvdjbcozgew
+
+wsclketugyaz
+qvfbjcxtmilgow
+
+amgirw
+yf
+
+iletugq
+hnoxbfkaspt
+
+qjdfcpvksmxzywahgn
+wnzceyskgpoxdhlmravjqf
+xjgvhcsqyfankpzmdw
+jyncdxwsqkvphfamgz
+dvznygwjkcmqsxahfp
+
+fkuwiezpljbdayhsr
+rphwbeujdzlfiasyk
+erdhpafkzbwjlusiy
+jwfhkrzdeabpliusy
+wfipeujhylazbsrkd
+
+fqmbwapvouelydgicj
+uelvqwomtyfjgcpadi
+qkpcsdeyjiwarovnglfum
+ijvgqdauoefpcylwbm
+ydmqpfewaovlicugj
+
+sgbq
+ltqambf
+djbuvn
+zmtbgy
+
+egvifnsaztxqcrywumj
+aqcxujnzvfwetrhgm
+fxdmtkgawplobqjenv
+
+bxuwpnl
+ztdkau
+
+ecylsbdv
+cvzlsbeyd
+yqcveblsd
+beyvlqcsd
+ebsvdycl
+
+eb
+xpnyter
+
+cbhqyzresnpxfwm
+cwksfvhxqperbimz
+whqzpbcsjxafre
+
+beodiasvj
+jbisdoave
+iedaovbsj
+jxovacsiebd
+
+prxsnyehgwifbzo
+ozpbsxynfiwrge
+ribozypewsxngf
+nyoxspzbfihgewr
+rxzewpbnimfoysg
+
+shviadjcue
+weduziolmcbngp
+vqdieycu
+cudeif
+dicyuqke
+
+nvcwhuo
+sltchuwnq
+unwhci
+
+ekrisbvx
+rsxiev
+exnrvsi
+srxevi
+xhsvnrei
+
+rs
+rs
+sr
+
+fuzjmek
+tihf
+
+ptlzxreqfdchibogvysmku
+pceyizvdkqxbhrtulsfmog
+gvkrxfsbipqedlyzomhtncu
+suyzgrobilxhmcfdtvkeqp
+
+okfvjneqyicuthwsmpxl
+wdojlsqknyhmptvicfe
+nyfjthmpivqgsulwkboec
+
+ufrpkliqjgwxeybmcztasovh
+qvkpyghxblewsaitrmzuonjc
+giptzywrejquxkoavslcmhb
+peaywubjozmcgrihlqsvxktf
+lehjpzguiksacobxywtmvrq
+
+egryz
+ergyz
+yzegr
+yfcgzre
+
+j
+j
+j
+p
+j
+
+bjt
+tbj
+tjb
+tbj
+jbt
+
+cklp
+lpck
+lckp
+
+fea
+eaf
+
+qgm
+dz
+
+yri
+yi
+zypdi
+
+ekwjxhtmgiudpz
+xepuhgwjizkdrmt
+ezghmliwtxujdpk
+wdhxpjizugkemtl
+
+gyokbspj
+kbgsopyj
+pykhdsjbgio
+opjykusbg
+jygbsopakc
+
+ixorlekwgnbcjm
+lrjkwxgie
+wgeikxjrlh
+rlkjxipeqgw
+
+ecgmdrykq
+myrclqdgek
+guqmzyceprkd
+dygckwerqm
+yrcgkiqempd
+
+u
+u
+
+bcwnvl
+fcvsib
+hcnvb
+cpgveoaby
+ivbcn
+
+n
+n
+n
+
+macuqyp
+fs
+
+pbout
+suota
+cuotm
+atmuo
+
+nlravibecfj
+eilcjafn
+aeibjfl
+jxfeilauo
+jafesdnli
+
+xfwroij
+fxwijor
+irxjofw
+rfjwboxi
+
+dj
+dvj
+dj
+dj
+
+mikhxcqensrodu
+imcvkhewgljupsxonq
+kceuqxltinhsom
+kzqanoemcxhius
+vmuoxineqpzhacbks
+
+hklcsoaywpfrdntmu
+xirbzckwjvpfygeno
+
+o
+to
+o
+
+zvirefunh
+ezhirnvfu
+runifzhev
+ezivhnrfu
+
+zfsoducbpai
+cupdisobazf
+aozbsucfdiypv
+bcfazodiups
+
+njfprukxamlg
+kpfrjgynulxma
+pijflgnuxkram
+pkuxalrmjfgn
+nkvrlmxustpfjga
+
+dszgm
+rsmu
+
+iaw
+aiw
+wai
+aiw
+iwa
+
+s
+s
+s
+sl
+s
+
+eyavhnk
+keov
+qeiwfkcgvrpsld
+kuvze
+
+a
+mh
+
+ilqchdfsog
+igscolmdzq
+
+fnyhxmpct
+lchdpamfu
+
+vijz
+vj
+
+dhpxjrmyuefclvqgni
+uicskweohgvfryxmdq
+tqgdifymexbwckruvh
+
+c
+c
+c
+
+lthidumvycszw
+cvpqjeuhlwrfyzg
+
+keocuw
+uckowe
+oekwcu
+cwukoe
+
+c
+c
+
+lkxjv
+jkvxl
+vxklj
+jkvxlwg
+zkxvjly
+
+sqlamxeuhpgwjbdcioy
+bumyjxsiqweholpgcda
+gecswjlqhadiuboxmpy
+syahibgopexwlucdqjm
+
+igebmv
+tawqvezdsmpunk
+rimocvgje
+evmbhc
+
+ykjisvfatux
+jfaisyvktux
+itksajfxuvy
+
+fclkush
+slcykdbgu
+fskuchl
+
+xjhulywagzeioq
+oejlfsquhbriayxwg
+jiexgylwzhuqao
+wyxhqljagieou
+hwladixguqejyo
+
+sofcbhuwyqtid
+icofdwsb
+dfwovimbcs
+cwibodnsxf
+
+jqnestpyaczfmxhwrbuvldi
+mxanrhbfcujvyzditwlo
+
+ntfgivkyszmarc
+qrajdhowuvpclbex
+
+kliwy
+ukwlryi
+ilkyw
+
+pmgltzsk
+ljmipztvgow
+zltmgup
+umztglp
+ftzmlpgk
+
+twepi
+teq
+
+ohyd
+mytjrwk
+hfy
+exyh
+ye
+
+rzsqhtlowavy
+twvhzyrjsqaol
+
+yzagcqrjeimwxokh
+fmxtiagboleqcwdrhzk
+opvemhasrguxkcqzwi
+
+atcpeyosnrjbg
+kcesobgua
+fagsev
+
+ca
+ac
+
+xahmtil
+hximtla
+
+hyutnjdrbsmofl
+dswjfyothmblrnq
+
+et
+te
+eqt
+tuje
+
+nbhpwzgtrcx
+gqcxobhriznw
+hwnbugrejxtczs
+cujrbxfhnwzg
+gcwzhrxndjb
+
+qwrfxhlyzcptvmkdeauigob
+zbchavlkmryxiptegwfouqd
+cfhuiptgqkoalrewzmvbyxds
+hudmwcgbfepyitovkaqzxrl
+
+eysuozkm
+ndgloqyv
+ignhwrovy
+
+iqufgnvxspdcjtylkbrozh
+inuzqktrvcxyhbgfosljdp
+
+qhfknsyeuirzagvcwd
+yfcgqnxewlkrsuazhi
+
+lj
+jl
+lj
+lyj
+jl
+
+kpholfxewrdt
+opdfhtlmkwex
+hpwftoxderlk
+ylxhwdofnztkpe
+rwfpxlhtdkoe
+
+ubml
+yvohg
+zeasf
+plum
+qhnjxg
+
+cjgzwmdyuakvixlprhfe
+kmplfuxywergchzjvani
+xcvlzmewyujgirhpfka
+fwhgrxkjcvpeuilzyam
+
+eclsiqp
+ivgspoe
+scepi
+pmiadtskyze
+
+akmdfivwgct
+yvgcwakhdimts
+lcvgirakwudtp
+aftnckwmidgv
+
+zuqblv
+blvzqu
+uvbqlz
+qbuzvl
+bzqxvlmu
+
+by
+betlcdvry
+yb
+bxy
+gybjx
+
+waoqdxpkmfnyrhjebcuvzs
+qprvfczedowxknhausmyjb
+cufdqvknwrajzybospmxeh
+qkjzybeadvncwhxumpfsro
+nwfkjxumpabzodvqychsre
+
+shdfctjrkwbvemoxluyzipnqag
+sgbwpeuqcilxojfynmrdhvktaz
+lhgkxfwuzbevojmrpnqydsacti
+gflnzjasbuyimxqcvwrdpohetk
+ynwedhbskjtvoucgapiqlzfxrm
+
+wlmjxp
+ylnxoajk
+luxjidte
+xjrvlcdeu
+
+pv
+vbpw
+wvuap
+kceavp
+rdphvoitqf
+
+dlxzwkhtmc
+twzhlmkdc
+tcylhkdwzm
+zwmlkdcth
+gdhikmctlwsz
+
+hpekwtlufyragqvb
+kbrwatlupqyfvh
+ucbvwlhfqatpkry
+hlakvyuqrfpwbt
+rubvwpfqlatkhy
+
+npxobl
+ckuhnplvx
+
+edkpjycofasulrthw
+rpuhcdyxlftosewa
+
+stuvhwaexykzdorbfpi
+shjuwgpfqmtacvlbirkzd
+
+frph
+wo
+h
+zumtyngcj
+pfse
+
+zivsgurp
+szirpvg
+gikvsprz
+zigpvsrk
+nvpsgzir
+
+rfimu
+hmqrlfxpbgu
+nrmoyftu
+nmujfr
+rfum
+
+bidzwmearovjkgcl
+ogdbirkzqmclejvaw
+gealcqozmijkbrvdw
+gzakwmdbejclrivo
+eolwifvgmrbjdazkc
+
+iurfyqgwk
+ymkvqfpwrig
+aqrfywikg
+bfdryxikgnwoq
+cjfgkryiuwq
+
+jvb
+x
+
+qkxnvfuopdytrzjgbm
+bmqkuyarjgtdpfzsnox
+obwjxyeqtingzmdrfkplu
+gamupstryfokbzqdxnj
+
+ymanp
+npfshjya
+pundyklatc
+ypfanh
+
+garp
+grpa
+arpg
+argp
+
+inedmtpwrvub
+vwibertnudmp
+idurbepwtmnv
+
+yczoaplwmxibqgsfn
+wbiuxyqzpncvgmsl
+gpoltrbisqfznwxcymj
+
+a
+a
+a
+a
+
+cgjviyufped
+pcuvygzkjid
+ptvigyjdcku
+
+u
+i
+tqa
+j
+ul
+
+zitbfuer
+uzfithernb
+uftbzire
+uitefbzr
+
+jcwkroamnegxvqsh
+kejhanqmvcrxwsog
+gaqmkexjvcsnrowh
+
+taegslmuyqcipz
+asytxrgdpfbcqliwz
+tpgoschavqjlkyzi
+
+oc
+oc
+oc
+co
+
+mrfvjlykquz
+fzmvuleykqt
+vykmzlgquf
+kqfzuvygetml
+
+a
+s
+
+ionve
+eailo
+jiomexwh
+beziqpdco
+ihtoe
+
+cfjvrqosnwyedaubmhgtlxzk
+olxzjfwrcytkbgudasvqhnme
+tuwfnckrzsvjgbxdmyhqlaeo
+txnydgufbmjaqkrzlwhoevcs
+bgakxqmfsdwyjvelntchzour
+
+njvkobzs
+bsjvkwn
+
+qmnluxw
+ovgtikpdbrya
+nchfsjqez
+
+khtdryej
+hdrtv
+qnaodtm
+
+as
+aus
+
+omjaixvgklq
+vgkaxjihdrlq
+ycxkzatpusiljqgv
+
+jtepylmrqbiwk
+xerlpmynqtkfbjwi
+timwpbkegljqry
+lqijkebmgpwyrt
+qrkljpbytemiw
+
+q
+xqint
+dkqb
+
+trjmdxpoeqcwf
+tfedxqcprwom
+kmftwxqporncde
+
+fpcmndhr
+dzepjngqikcfrh
+nhfpcrd
+
+c
+c
+c
+y
+c
+
+t
+t
+ti
+
+tgfspxdy
+sytgpfxd
+
+zov
+voz
+ovz
+
+ic
+ieuc
+
+vhesndkizjgwcpobulam
+szjymxwopckfqtgdib
+
+jdfzgqsbrmnticl
+fbcdgqtznmjri
+doitrczjqfbgmn
+otzbjfidmnrqcg
+
+cb
+bc
+cb
+cb
+
+aspjvghyurx
+vcarwsbh
+laeshvzrb
+hsrvia
+
+kpxzdhasfmltouvrc
+duvpkascromz
+vmcskupzorad
+
+pguayqbwm
+gpyaqbwum
+ywaqgpmbu
+
+ypdlnjse
+elskbyz
+jesylo
+lyse
+
+zlokqmjiurpwgbn
+xzvurhgmlkwqnibjpo
+
+wpzenbojcykqxvt
+wnyzlbjkeoqtvcpx
+itkjzydbpvoxcewnq
+
+gfuvenodsizwmh
+hwfuvsntdg
+
+gkibnpalc
+inkcgpal
+gnpzliakfc
+
+ibektdpuhg
+iwbgjke
+iycnergfqkbo
+egxadvlmbijk
+
+l
+yjg
+l
+
+ymuoc
+oymcu
+oymcu
+youcm
+ycomu
+
+wifoqy
+zksfrict
+bdpvhuilgejn
+acoi
+mqi
+
+qrcukhwvzdjilpto
+hqrmwkupclvjtizo
+
+gdizlfawobuk
+dihqfswcgukzrbla
+gmukawbdfizlo
+
+zwdrpv
+dzvpwr
+
+ycidkpfrqjelha
+pjahykfecdqrli
+kfqlajhdepyirc
+pkhaceijlqdfry
+
+pwuxbqotey
+okbphqutfx
+xvsgodubtlpqijr
+puoewaxtbmq
+
+qtbaoex
+xpoqa
+agiweqtop
+nozuadmjrq
+
+huvqdaij
+fkuvaijdhq
+
+biewrdlzc
+rjlcikbzmdwve
+leucwfpoizndbxr
+
+avgtnubqcpxrhwdoml
+vrkqgyndcmohtupswa
+
+dmjqfesnxyciz
+hfzudcjxsmno
+mfjhrcsxznd
+lcmbjnxzfadrs
+
+tvayrhpqskd
+qrtkvhyus
+epjsytzhvrqk
+yzqohmvtgsrk
+hvlysqtwirbk
+
+ieyd
+aipeyg
+
+r
+rg
+rm
+r
+
+qcweajhfmlgyzpv
+ouqdxmsphkbatenr
+
+fba
+kfba
+baf
+
+vxpblsyjnrmkai
+vpyhagcwqbzxmik
+rpbytexdijnfavkom
+
+fpmytnk
+cyaw
+
+jhyimdg
+mhyij
+hmvyij
+mihezcovyj
+yhmciej
+
+sqfaopkgze
+kxsecfphozq
+qsotezpfk
+
+ewcvoaurmjhq
+cuqvjwreaohm
+ewvjmqacuorh
+wauhojecqmvrs
+
+lyieuqdjcb
+vkpctdmywzsreubn
+delchbujy
+jbcyegdou
+xduayceb
+
+nidxswarcqtk
+kciqdarnbewsxt
+acqrdkntipxlsw
+ikpawtcdsqnrx
+
+gikrfhwltveap
+yeplvatowncgxirf
+griadtewmvblpf
+
+htjkmzxlvbygcwqioe
+jzwtymxvigbheolckq
+cxmvjyklobhtwgqzie
+teczbxvlmgojqiwkyh
+oxvejlbtiqywhzgmkc
+
+jkfapozdwcie
+bmushwjgltrn
+
+rpnbxkoij
+exjdri
+uirjegxsa
+
+zawoncbymgsrhv
+dvctxgeusr
+cvizgyhlmrwsfp
+
+shnyujedctwfq
+yscahxndftreq
+
+xrnysi
+itcluvmd
+niqwozjber
+
+gjobshlayxvctnfq
+ljcxaonvbstqfgyh
+ybhxgntqcsvfaojl
+rjoxblqavncusgheytf
+sncqlvybxfjtghao
+
+uozb
+ldewrck
+xbg
+xhg
+z
+
+yubqaznf
+imwhrgnkjls
+
+msvgjrnkcloaup
+csxjnkgrpiuoveamy
+pknvrajmcudswgzo
+tnupacsxrgkvmoji
+bpnkfarqumsvhcojg
+
+bzvyuenaihfdcgwk
+puchyenmzgksrijoa
+ugebciktnlzhay
+
+cedfutpnsivjlobrkaxy
+denscvpbmlkxaojrfh
+
+vugjrq
+jqgtuwcnrv
+grvkuqj
+gbmvqsyxjueplzirhf
+avudnjqgr
+
+vpidajtmgozxwuksh
+ughiwmakpjszdtvox
+wugipxzdvastkhmj
+sxughjakmnwfpdivzt
+wimvaupjhgxstkzd
+
+mqsuwhdxpcozfr
+rsdwhfpakzxjmo
+eysprldfqzowmhx
+fodhrtmswxyzp
+
+vsmzfbjhwqxiugtlc
+gcqdsfmpletnhbxr
+
+uxbgkfjwesmlchr
+feakldxqnpwcjgvrzbhs
+hjosrixfmlcgbkew
+
+dszv
+zsvd
+vsdz
+zvds
+sdzv
+
+pdw
+lxudjpiwz
+advnkpqw
+hswpdog
+
+gslpira
+neuzf
+
+ifjt
+tjif
+jfit
+jitf
+ifktj
+
+jrnzb
+unkjshpe
+njza
+
+ydigxaqm
+iaeokqgmyhr
+
+bkxmngtdlyev
+nmbuzoveixlprkys
+
+zjloghmtu
+ermvzn
+qzdncfm
+afczxmp
+
+aptscynieqmfgjhbr
+bmsirnafyepthgcqj
+
+q
+qlr
+fq
+qk
+
+v
+v
+
+ucrmbsozjkfy
+buscrmofkzy
+uosmfkryzbc
+sqirbfzmocuynk
+mbucykofrzs
+
+lrp
+plz
+lrp
+lp
+lp
+
+yfzmpgcsw
+prycgfm
+rfcmgpy
+scgmyqpf
+flcyvpohmgu
+
+g
+g
+g
+e
+
+lxoaibjch
+wudyrfvkzn
+gtpmkeyqd
+
+zjhlwbtfuvick
+wujtvblzchkif
+
+ksdfpvqbtxaluneo
+dqofprhnxamskujeb
+
+hacwigyftqblx
+xwlqahitbgcyf
+ahyxlwgtqifbc
+
+mb
+m
+mg
+m
+
+ecrasdtyljuqimhnwfb
+qleiaydjcugrwn
+jdyewaqnrcliu
+
+g
+lqfio
+adhstybz
+
+gryzuxenhlvopbtmfwqcas
+yeqzalmogbncxpsfujwh
+mflqzhoaupcseygnbwx
+myswzuonfqlaxecbhpgj
+
+uwvzati
+uzcjvtai
+savuizt
+atiuzv
+
+cozuin
+abuizo
+tiozua
+wilfzeoqu
+roictxuz
+
+gndpkojqu
+gunkpsjoa
+rtmzjpgkovwxlnuc
+
+lrj
+rjl
+mrjl
+
+udlpevjgzrfawitqs
+qgrtiujslfeovza
+surivgtfqjleaz
+ezavgjtlfrusiq
+
+g
+fx
+mf
+tx
+iyqd
+
+sljgmdztynvrqexhwfi
+gvwdyerlqnxthmjifsz
+qgmjlfwrxztynivdhse
+
+zkvuir
+kvruiz
+vriukz
+kriumzv
+zruikv
+
+zyqgnvda
+kdygvqanz
+zyagvqdnu
+qnwdmlaxgzyfvo
+dnzgyavq
+
+o
+s
+q
+
+cbroy
+qiyocmjdt
+uyoc
+
+lkqj
+kjql
+jqlk
+ljqk
+"""
+
+
+# In[10]:
+
+
+from string import ascii_lowercase as letters
+
+
+# In[11]:
+
+
+letters
+
+
+# In[2]:
+
+
+def split_inp(inp=inp):
+    yield from inp.split("\n\n")
+
+
+# In[22]:
+
+
+def aoc_6_1(inp=inp):
+    return sum(ltr in grp 
+               for ltr in letters
+               for grp in split_inp(inp))
+
+
+# In[23]:
+
+
+aoc_6_1()
+
+
+# ## 6.2
+
+# In[15]:
+
+
+def split_group(grp):
+    return grp.splitlines()
+
+
+# In[46]:
+
+
+def calc_group(grp):
+    return sum(all([letter in person for person in split_group(grp)]) 
+               for letter in letters)
+
+
+# In[53]:
+
+
+def aoc_6_2(inp=inp):
+    return sum(calc_group(grp) for grp in split_inp(inp))
+
+
+# In[54]:
+
+
+aoc_6_2()
 
 
 # In[ ]:
