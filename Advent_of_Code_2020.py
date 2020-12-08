@@ -3,7 +3,7 @@
 
 # # Setup
 
-# In[88]:
+# In[1]:
 
 
 get_ipython().system(' jupyter nbconvert --to python Advent_of_Code_2020.ipynb')
@@ -181,7 +181,7 @@ aoc_2_2()
 
 # # 3
 
-# In[32]:
+# In[21]:
 
 
 day = 3
@@ -191,13 +191,13 @@ inp = read_input(day)
 
 # ## 3.1
 
-# In[33]:
+# In[22]:
 
 
 import itertools as it
 
 
-# In[34]:
+# In[23]:
 
 
 def aoc_3_1(inp=inp, debug=False):
@@ -212,7 +212,7 @@ def aoc_3_1(inp=inp, debug=False):
     return path.count("#")
 
 
-# In[35]:
+# In[24]:
 
 
 aoc_3_1()
@@ -220,7 +220,7 @@ aoc_3_1()
 
 # ## 3.2
 
-# In[36]:
+# In[25]:
 
 
 test_inp = """..##.......
@@ -236,7 +236,7 @@ test_inp = """..##.......
 .#..#...#.#"""
 
 
-# In[37]:
+# In[26]:
 
 
 def aoc_3_2_helper(right=3, down=1, inp=inp, debug=False):
@@ -254,7 +254,7 @@ def aoc_3_2_helper(right=3, down=1, inp=inp, debug=False):
     return path.count("#")
 
 
-# In[38]:
+# In[27]:
 
 
 def aoc_3_2(rights=(1, 3, 5, 7, 1), downs=(1, 1, 1, 1, 2), inp=inp, debug=False):
@@ -268,13 +268,13 @@ def aoc_3_2(rights=(1, 3, 5, 7, 1), downs=(1, 1, 1, 1, 2), inp=inp, debug=False)
     return product
 
 
-# In[39]:
+# In[28]:
 
 
 aoc_3_2(inp=test_inp, debug=True)
 
 
-# In[40]:
+# In[29]:
 
 
 aoc_3_2(inp=inp, debug=True)
@@ -282,7 +282,7 @@ aoc_3_2(inp=inp, debug=True)
 
 # # 4
 
-# In[41]:
+# In[30]:
 
 
 day = 4
@@ -292,7 +292,7 @@ inp = read_input(day)
 
 # ## 4.1
 
-# In[42]:
+# In[31]:
 
 
 test_inp = """ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
@@ -310,52 +310,52 @@ hcl:#cfa07d eyr:2025 pid:166559648
 iyr:2011 ecl:brn hgt:59in"""
 
 
-# In[43]:
+# In[32]:
 
 
 KEYS = set(("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid", "cid"))
 
 
-# In[44]:
+# In[33]:
 
 
 OPT_KEYS = set(("cid",))
 
 
-# In[45]:
+# In[34]:
 
 
 REQ_KEYS = KEYS.difference(OPT_KEYS)
 
 
-# In[46]:
+# In[35]:
 
 
 KEYS, OPT_KEYS, REQ_KEYS
 
 
-# In[47]:
+# In[36]:
 
 
 def split_inp(inp=inp):
     yield from inp.split("\n\n")
 
 
-# In[48]:
+# In[37]:
 
 
 def check_passport(pp):
     return all([f"{k}:" in pp for k in REQ_KEYS])
 
 
-# In[49]:
+# In[38]:
 
 
 def aoc_4_1(inp=inp):
     return sum(check_passport(pp) for pp in split_inp(inp))
 
 
-# In[50]:
+# In[39]:
 
 
 aoc_4_1()
@@ -363,31 +363,31 @@ aoc_4_1()
 
 # ## 4.2
 
-# In[51]:
+# In[40]:
 
 
 from functools import partial
 
 
-# In[52]:
+# In[41]:
 
 
 import re
 
 
-# In[53]:
+# In[42]:
 
 
 REQ_KEYS = ("byr", "ecl", "eyr", "hcl", "hgt", "iyr", "pid")
 
 
-# In[54]:
+# In[43]:
 
 
 ECLS = ("amb", "blu", "brn", "gry", "grn", "hzl", "oth")
 
 
-# In[55]:
+# In[44]:
 
 
 def year_check(y, miny, maxy, digits=4):
@@ -397,7 +397,7 @@ def year_check(y, miny, maxy, digits=4):
         return False
 
 
-# In[56]:
+# In[45]:
 
 
 def check_height(hgt):
@@ -416,7 +416,7 @@ def check_height(hgt):
         return 59 <= val <= 76
 
 
-# In[57]:
+# In[46]:
 
 
 RULES = {
@@ -430,7 +430,7 @@ RULES = {
 }
 
 
-# In[58]:
+# In[47]:
 
 
 def parse_passport(pp):
@@ -440,7 +440,7 @@ def parse_passport(pp):
     return pp_dict
 
 
-# In[59]:
+# In[48]:
 
 
 def check_passport_2(pp):
@@ -451,14 +451,14 @@ def check_passport_2(pp):
     return all(RULES[field](value) for field, value in fields.items())
 
 
-# In[60]:
+# In[49]:
 
 
 def aoc_4_2(inp=inp):
     return sum(check_passport_2(pp) for pp in split_inp(inp))
 
 
-# In[61]:
+# In[50]:
 
 
 aoc_4_2()
@@ -466,7 +466,7 @@ aoc_4_2()
 
 # # 5
 
-# In[62]:
+# In[51]:
 
 
 day = 5
@@ -482,7 +482,7 @@ inp = read_input(day)
 # BBFFBBFRLL: row 102, column 4, seat ID 820.
 # ```
 
-# In[63]:
+# In[52]:
 
 
 test_inp = """BFFFBBFRRR
@@ -490,7 +490,7 @@ FFFBBBFRRR
 BBFFBBFRLL"""
 
 
-# In[64]:
+# In[53]:
 
 
 def split_line(line: str):
@@ -498,7 +498,7 @@ def split_line(line: str):
     return row_b, col_b
 
 
-# In[65]:
+# In[54]:
 
 
 def map_to_bin(s, map_0="L", map_1="R"):
@@ -506,7 +506,7 @@ def map_to_bin(s, map_0="L", map_1="R"):
     return int(remapped, 2)
 
 
-# In[66]:
+# In[55]:
 
 
 def calc_seat_num(line):
@@ -515,14 +515,14 @@ def calc_seat_num(line):
     return row * 8 + col
 
 
-# In[67]:
+# In[56]:
 
 
 def aoc_5_1(inp=inp):
     return max(calc_seat_num(line) for line in inp.splitlines())
 
 
-# In[68]:
+# In[57]:
 
 
 aoc_5_1()
@@ -530,14 +530,14 @@ aoc_5_1()
 
 # ## 5.2
 
-# In[69]:
+# In[58]:
 
 
 def all_seats(inp):
     return (calc_seat_num(line) for line in inp.splitlines())
 
 
-# In[70]:
+# In[59]:
 
 
 def aoc_5_2(inp=inp):
@@ -547,7 +547,7 @@ def aoc_5_2(inp=inp):
     return my_seat
 
 
-# In[71]:
+# In[60]:
 
 
 aoc_5_2()
@@ -555,7 +555,7 @@ aoc_5_2()
 
 # # 6
 
-# In[78]:
+# In[61]:
 
 
 day = 6
@@ -565,26 +565,26 @@ inp = read_input(day)
 
 # ## 6.1
 
-# In[79]:
+# In[62]:
 
 
 from string import ascii_lowercase as letters
 
 
-# In[80]:
+# In[63]:
 
 
 letters
 
 
-# In[81]:
+# In[64]:
 
 
 def split_inp(inp=inp):
     yield from inp.split("\n\n")
 
 
-# In[82]:
+# In[65]:
 
 
 def aoc_6_1(inp=inp):
@@ -593,7 +593,7 @@ def aoc_6_1(inp=inp):
                for grp in split_inp(inp))
 
 
-# In[83]:
+# In[66]:
 
 
 aoc_6_1()
@@ -601,14 +601,14 @@ aoc_6_1()
 
 # ## 6.2
 
-# In[84]:
+# In[67]:
 
 
 def split_group(grp):
     return grp.splitlines()
 
 
-# In[85]:
+# In[68]:
 
 
 def calc_group(grp):
@@ -616,15 +616,235 @@ def calc_group(grp):
                for letter in letters)
 
 
-# In[86]:
+# In[69]:
 
 
 def aoc_6_2(inp=inp):
     return sum(calc_group(grp) for grp in split_inp(inp))
 
 
-# In[87]:
+# In[70]:
 
 
 aoc_6_2()
+
+
+# # 7
+
+# In[71]:
+
+
+day = 7
+#put_away_input(inp, day)
+inp = read_input(day)
+
+
+# ## 7.1
+
+# In[94]:
+
+
+test_inp = """light red bags contain 1 bright white bag, 2 muted yellow bags.
+dark orange bags contain 3 bright white bags, 4 muted yellow bags.
+bright white bags contain 1 shiny gold bag.
+muted yellow bags contain 2 shiny gold bags, 9 faded blue bags.
+shiny gold bags contain 1 dark olive bag, 2 vibrant plum bags.
+dark olive bags contain 3 faded blue bags, 4 dotted black bags.
+vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.
+faded blue bags contain no other bags.
+dotted black bags contain no other bags."""
+
+
+# In[95]:
+
+
+import re
+
+
+# In[97]:
+
+
+COL = "shiny gold"
+
+
+# In[98]:
+
+
+def parse_inside_bags(inside_bags):
+    inside_bag_tuples = re.findall(r"(\d+) (.+?) bag", inside_bags)
+    return {color: int(n) for n, color in inside_bag_tuples}
+
+
+# In[99]:
+
+
+def parse_line(line: str):
+    """in: line (str),
+    out: outside bag (str), potential inside bags (dict {str: int})"""
+    outside_bag, inside_bags = line.split(" bags contain ")
+    inside_dict = parse_inside_bags(inside_bags)
+    return outside_bag, inside_dict
+
+
+# In[100]:
+
+
+def parse_all_lines(inp):
+    all_lines = [parse_line(line) for line in inp.splitlines()]
+    outside, inside = zip(*all_lines)
+    colors = set(color for color in outside)
+    for inside_dict in inside:
+        colors |= set([color for color in inside_dict])
+    print(f"Found {len(colors)} unique colors.")
+    return colors, outside, inside
+
+
+# In[101]:
+
+
+def create_parent_dict(colors, outside, inside):
+    parent_dict = {color: set() for color in colors}
+    for out_col, in_cols in zip(outside, inside):
+        for in_col in in_cols:
+            parent_dict[in_col].add(out_col)
+    return parent_dict
+
+
+# In[102]:
+
+
+def aoc_7_1(inp=inp):
+    global COL
+    parent_dict = create_parent_dict(*parse_all_lines(inp))
+    can_be_inside = set(parent_dict[COL])
+    print(f"{COL} can be directly in {can_be_inside}...")
+    checked = set()
+    while can_be_inside:
+        to_check = can_be_inside.pop()
+        if to_check in checked:
+            continue
+        can_be_inside |= set(parent_dict[to_check])
+        checked.add(to_check)
+    print(f"... and indirectly in {len(checked)} bag styles.")
+    return len(checked)
+
+
+# In[103]:
+
+
+aoc_7_1(test_inp)
+
+
+# In[104]:
+
+
+aoc_7_1()
+
+
+# ## 7.2
+
+# In[105]:
+
+
+test_inp = """shiny gold bags contain 2 dark red bags.
+dark red bags contain 2 dark orange bags.
+dark orange bags contain 2 dark yellow bags.
+dark yellow bags contain 2 dark green bags.
+dark green bags contain 2 dark blue bags.
+dark blue bags contain 2 dark violet bags.
+dark violet bags contain no other bags."""
+
+
+# In[132]:
+
+
+colors, outside, inside = parse_all_lines(inp)
+
+
+# In[136]:
+
+
+in_cols = inside[0]
+
+
+# In[137]:
+
+
+in_cols
+
+
+# In[140]:
+
+
+for in_col, in_val in in_cols.items():
+    print(in_val)
+
+
+# In[130]:
+
+
+d = {}
+
+
+# In[131]:
+
+
+in_col in d
+
+
+# In[115]:
+
+
+from collections import defaultdict
+
+
+# In[141]:
+
+
+def create_children_dict(colors, outside, inside):
+    children_dict = {col: {} for col in colors}
+    for out_col, in_cols in zip(outside, inside):
+        for in_col, in_val in in_cols.items():
+            if in_col in children_dict[out_col]:
+                children_dict[out_col][in_col] += in_val
+            else:
+                children_dict[out_col][in_col] = in_val
+    return children_dict
+
+
+# In[144]:
+
+
+def aoc_7_2(inp=inp):
+    global COL
+    children_dict = create_children_dict(*parse_all_lines(inp))
+    can_have_inside = set(children_dict[COL])
+    checked = set()
+    raise NotImplementedError
+#     while can_have_inside:
+#         to_check = can_have_inside.pop()
+#         if to_check in checked:
+#             continue
+#         can_have_inside |= set(children_dict[to_check])
+#         checked.add(to_check)
+#     print(f"... and indirectly in {len(checked)} bag styles.")
+#     return len(checked)
+
+
+# In[142]:
+
+
+c = create_children_dict(*parse_all_lines(test_inp))
+
+
+# In[143]:
+
+
+c
+
+
+# In[ ]:
+
+
+
 
