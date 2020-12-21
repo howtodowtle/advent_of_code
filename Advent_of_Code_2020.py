@@ -641,10 +641,10 @@ inp = read_input(day)
 
 # ## 7.1
 
-# In[94]:
+# In[72]:
 
 
-test_inp = """light red bags contain 1 bright white bag, 2 muted yellow bags.
+test_inp_1 = """light red bags contain 1 bright white bag, 2 muted yellow bags.
 dark orange bags contain 3 bright white bags, 4 muted yellow bags.
 bright white bags contain 1 shiny gold bag.
 muted yellow bags contain 2 shiny gold bags, 9 faded blue bags.
@@ -655,19 +655,19 @@ faded blue bags contain no other bags.
 dotted black bags contain no other bags."""
 
 
-# In[95]:
+# In[73]:
 
 
 import re
 
 
-# In[97]:
+# In[74]:
 
 
 COL = "shiny gold"
 
 
-# In[98]:
+# In[75]:
 
 
 def parse_inside_bags(inside_bags):
@@ -675,7 +675,7 @@ def parse_inside_bags(inside_bags):
     return {color: int(n) for n, color in inside_bag_tuples}
 
 
-# In[99]:
+# In[76]:
 
 
 def parse_line(line: str):
@@ -686,20 +686,20 @@ def parse_line(line: str):
     return outside_bag, inside_dict
 
 
-# In[100]:
+# In[77]:
 
 
-def parse_all_lines(inp):
+def parse_all_lines(inp, verbose=False):
     all_lines = [parse_line(line) for line in inp.splitlines()]
     outside, inside = zip(*all_lines)
     colors = set(color for color in outside)
     for inside_dict in inside:
         colors |= set([color for color in inside_dict])
-    print(f"Found {len(colors)} unique colors.")
+    if verbose: print(f"Found {len(colors)} unique colors.")
     return colors, outside, inside
 
 
-# In[101]:
+# In[78]:
 
 
 def create_parent_dict(colors, outside, inside):
@@ -710,7 +710,7 @@ def create_parent_dict(colors, outside, inside):
     return parent_dict
 
 
-# In[102]:
+# In[79]:
 
 
 def aoc_7_1(inp=inp):
@@ -729,13 +729,13 @@ def aoc_7_1(inp=inp):
     return len(checked)
 
 
-# In[103]:
+# In[81]:
 
 
-aoc_7_1(test_inp)
+aoc_7_1(test_inp_1)
 
 
-# In[104]:
+# In[82]:
 
 
 aoc_7_1()
@@ -743,10 +743,10 @@ aoc_7_1()
 
 # ## 7.2
 
-# In[105]:
+# In[83]:
 
 
-test_inp = """shiny gold bags contain 2 dark red bags.
+test_inp_2 = """shiny gold bags contain 2 dark red bags.
 dark red bags contain 2 dark orange bags.
 dark orange bags contain 2 dark yellow bags.
 dark yellow bags contain 2 dark green bags.
@@ -755,92 +755,44 @@ dark blue bags contain 2 dark violet bags.
 dark violet bags contain no other bags."""
 
 
-# In[132]:
-
-
-colors, outside, inside = parse_all_lines(inp)
-
-
-# In[136]:
-
-
-in_cols = inside[0]
-
-
-# In[137]:
-
-
-in_cols
-
-
-# In[140]:
-
-
-for in_col, in_val in in_cols.items():
-    print(in_val)
-
-
-# In[130]:
-
-
-d = {}
-
-
-# In[131]:
-
-
-in_col in d
-
-
-# In[115]:
-
-
-from collections import defaultdict
-
-
-# In[141]:
-
-
-def create_children_dict(colors, outside, inside):
-    children_dict = {col: {} for col in colors}
-    for out_col, in_cols in zip(outside, inside):
-        for in_col, in_val in in_cols.items():
-            if in_col in children_dict[out_col]:
-                children_dict[out_col][in_col] += in_val
-            else:
-                children_dict[out_col][in_col] = in_val
-    return children_dict
-
-
-# In[144]:
+# In[84]:
 
 
 def aoc_7_2(inp=inp):
     global COL
-    children_dict = create_children_dict(*parse_all_lines(inp))
-    can_have_inside = set(children_dict[COL])
-    checked = set()
-    raise NotImplementedError
-#     while can_have_inside:
-#         to_check = can_have_inside.pop()
-#         if to_check in checked:
-#             continue
-#         can_have_inside |= set(children_dict[to_check])
-#         checked.add(to_check)
-#     print(f"... and indirectly in {len(checked)} bag styles.")
-#     return len(checked)
+    colors, outside, inside = parse_all_lines(inp)
+    out_in = dict(zip(outside, inside))
+    
+    def get_number(color, num, verbose=False):
+        contents = out_in.get(color)
+        if verbose: print(f"We have {num} {color} bags.")
+        if contents:
+            if verbose: print(f"{color:20} is in out_in, it's contents are:\n{contents}.")
+            bags_inside = num + sum([num * get_number(inside_col, inside_num) for inside_col, inside_num in contents.items()])
+            if verbose: print(f"# bags inside {color}: {bags_inside}.")
+            return bags_inside
+        if verbose: print(f"Empty.")
+        return num
+    
+    return get_number(COL, 1) - 1
 
 
-# In[142]:
+# In[85]:
 
 
-c = create_children_dict(*parse_all_lines(test_inp))
+assert aoc_7_2(test_inp_1) == 32
 
 
-# In[143]:
+# In[86]:
 
 
-c
+assert aoc_7_2(test_inp_2) == 126
+
+
+# In[87]:
+
+
+aoc_7_2(inp)
 
 
 # In[ ]:
