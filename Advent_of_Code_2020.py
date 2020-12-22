@@ -3,27 +3,36 @@
 
 # # Setup
 
-# In[1]:
+# In[177]:
 
 
 get_ipython().system(' jupyter nbconvert --to python Advent_of_Code_2020.ipynb')
 
 
-# In[2]:
+# In[99]:
 
 
 get_ipython().system(' mkdir -p inputs')
 
 
-# In[3]:
+# In[320]:
 
 
-def put_away_input(inp, day):
-    with open(f"inputs/inp_day_{day}.txt", "w") as f:
+def put_away_input(inp, day, overwrite=False):
+    import os
+    filename = f"inputs/inp_day_{day}.txt"
+    if os.path.exists(filename):
+        print(f"{filename} exists. Overwrite? (y/n)")
+        overwrite = input() == "y"
+        if not overwrite:
+            print("Not overwriting existing file.")            
+            return
+    print(f"Writing {filename}.")
+    with open(filename, "w") as f:
         f.write(inp)
 
 
-# In[4]:
+# In[101]:
 
 
 def read_input(day):
@@ -631,17 +640,17 @@ aoc_6_2()
 
 # # 7
 
-# In[71]:
+# In[107]:
 
 
 day = 7
-#put_away_input(inp, day)
+# put_away_input(inp, day)
 inp = read_input(day)
 
 
 # ## 7.1
 
-# In[72]:
+# In[108]:
 
 
 test_inp_1 = """light red bags contain 1 bright white bag, 2 muted yellow bags.
@@ -655,19 +664,19 @@ faded blue bags contain no other bags.
 dotted black bags contain no other bags."""
 
 
-# In[73]:
+# In[109]:
 
 
 import re
 
 
-# In[74]:
+# In[110]:
 
 
 COL = "shiny gold"
 
 
-# In[75]:
+# In[111]:
 
 
 def parse_inside_bags(inside_bags):
@@ -675,7 +684,7 @@ def parse_inside_bags(inside_bags):
     return {color: int(n) for n, color in inside_bag_tuples}
 
 
-# In[76]:
+# In[112]:
 
 
 def parse_line(line: str):
@@ -686,7 +695,7 @@ def parse_line(line: str):
     return outside_bag, inside_dict
 
 
-# In[77]:
+# In[113]:
 
 
 def parse_all_lines(inp, verbose=False):
@@ -699,7 +708,7 @@ def parse_all_lines(inp, verbose=False):
     return colors, outside, inside
 
 
-# In[78]:
+# In[114]:
 
 
 def create_parent_dict(colors, outside, inside):
@@ -710,7 +719,7 @@ def create_parent_dict(colors, outside, inside):
     return parent_dict
 
 
-# In[79]:
+# In[115]:
 
 
 def aoc_7_1(inp=inp):
@@ -729,13 +738,13 @@ def aoc_7_1(inp=inp):
     return len(checked)
 
 
-# In[81]:
+# In[116]:
 
 
 aoc_7_1(test_inp_1)
 
 
-# In[82]:
+# In[117]:
 
 
 aoc_7_1()
@@ -743,7 +752,7 @@ aoc_7_1()
 
 # ## 7.2
 
-# In[83]:
+# In[118]:
 
 
 test_inp_2 = """shiny gold bags contain 2 dark red bags.
@@ -755,44 +764,334 @@ dark blue bags contain 2 dark violet bags.
 dark violet bags contain no other bags."""
 
 
-# In[84]:
+# In[119]:
 
 
-def aoc_7_2(inp=inp):
+def aoc_7_2(inp=inp, verbose=False):
     global COL
     colors, outside, inside = parse_all_lines(inp)
     out_in = dict(zip(outside, inside))
     
-    def get_number(color, num, verbose=False):
+    def get_number(color, num, out_in=out_in, verbose=False):
         contents = out_in.get(color)
         if verbose: print(f"We have {num} {color} bags.")
         if contents:
             if verbose: print(f"{color:20} is in out_in, it's contents are:\n{contents}.")
-            bags_inside = num + sum([num * get_number(inside_col, inside_num) for inside_col, inside_num in contents.items()])
+            bags_inside = num + sum([num * get_number(inside_col, inside_num) 
+                                     for inside_col, inside_num in contents.items()])
             if verbose: print(f"# bags inside {color}: {bags_inside}.")
             return bags_inside
         if verbose: print(f"Empty.")
         return num
     
-    return get_number(COL, 1) - 1
+    return get_number(COL, 1) - 1  # subtract shiny gold bag itself
 
 
-# In[85]:
+# In[120]:
 
 
 assert aoc_7_2(test_inp_1) == 32
 
 
-# In[86]:
+# In[121]:
 
 
 assert aoc_7_2(test_inp_2) == 126
 
 
-# In[87]:
+# In[122]:
 
 
-aoc_7_2(inp)
+aoc_7_2()
+
+
+# # 8
+
+# In[133]:
+
+
+day = 8
+# put_away_input(inp, day)
+inp = read_input(day)
+
+
+# ## 8.1
+
+# In[134]:
+
+
+test_inp = """nop +0
+acc +1
+jmp +4
+acc +3
+jmp -3
+acc -99
+acc +1
+jmp -4
+acc +6"""
+
+
+# In[138]:
+
+
+def split_instruction(inst):
+    op = inst[:3]
+    val = int(inst.split(" ")[-1])
+    return op, val
+
+
+# In[158]:
+
+
+def read_code(inp):
+    return tuple(split_instruction(inst)
+                 for inst in inp.splitlines())
+
+
+# In[217]:
+
+
+def aoc_8_1(inp=inp, verbose=False):
+
+    code = read_code(inp)
+    visited = set()
+    acc, idx = 0, 0
+
+    while True:
+        if idx in visited:
+            return acc
+        visited.add(idx)
+        op, val = code[idx]
+        acc += val if op == "acc" else 0
+        idx += val if op == "jmp" else 1
+        if verbose:
+            print(f"[{op:} {val:2}] - accumulator now at {acc}, jumping to idx {idx}.")
+
+
+# In[218]:
+
+
+aoc_8_1(test_inp, verbose=True)
+
+
+# In[219]:
+
+
+assert aoc_8_1(test_inp) == 5
+
+
+# In[220]:
+
+
+aoc_8_1()
+
+
+# ## 8.2
+
+# In[256]:
+
+
+def split_instruction(inst, immutable=True):
+    op = inst[:3]
+    val = int(inst.split(" ")[-1])
+    iter_func = tuple if immutable else list
+    return iter_func((op, val))
+
+
+# In[257]:
+
+
+def read_code(inp, immutable=True):
+    iter_func = tuple if immutable else list
+    return iter_func(split_instruction(inst, immutable)
+                     for inst in inp.splitlines())
+
+
+# In[297]:
+
+
+def is_finite(code):
+
+    visited = set()
+    acc, idx = 0, 0
+
+    while True:
+        if idx in visited:
+            return False, acc
+        if idx >= len(code):
+            return True, acc
+        visited.add(idx)
+        op, val = code[idx]
+        acc += val if op == "acc" else 0
+        idx += val if op == "jmp" else 1
+
+
+# In[298]:
+
+
+from copy import deepcopy
+
+
+# In[299]:
+
+
+def aoc_8_2(inp=inp):
+
+    og_code = read_code(inp, immutable=False)
+    for idx, (op, val) in enumerate(og_code):
+        if op == "acc":
+            continue
+        new_code = deepcopy(og_code)
+        new_code[idx][0] = "jmp" if op == "nop" else "nop"
+        finite, acc = is_finite(new_code)
+        if finite:
+            return acc
+
+
+# In[300]:
+
+
+aoc_8_2(test_inp)
+
+
+# In[294]:
+
+
+aoc_8_2()
+
+
+# # 9
+
+# In[321]:
+
+
+day = 9
+# put_away_input(inp, day)
+inp = read_input(day)
+
+
+# ## 9.1
+
+# In[301]:
+
+
+test_inp = """35
+20
+15
+25
+47
+40
+62
+55
+65
+95
+102
+117
+150
+182
+127
+219
+299
+277
+309
+576"""
+
+
+# In[312]:
+
+
+import itertools as it
+
+
+# In[313]:
+
+
+def is_valid(n, previous_nums):
+    for nums in it.permutations(previous_nums, 2):
+        if sum(nums) == n:
+            return True
+    return False
+
+
+# In[331]:
+
+
+def aoc_9_1(inp=inp, preamble_len=25, verbose=False):
+    nums = tuple(int(n) for n in inp.splitlines())
+    if verbose:
+        print(nums)
+    for idx, n in enumerate(nums[preamble_len:]):
+        previous_nums = nums[idx : idx + preamble_len]
+        if verbose:
+            print(f"n={n}. Checking from idx {idx} to idx {idx + preamble_len}: {previous_nums}.")
+        if not is_valid(n, previous_nums):
+            return n
+
+
+# In[332]:
+
+
+aoc_9_1(test_inp, 5, verbose=True)
+
+
+# In[333]:
+
+
+aoc_9_1()
+
+
+# ## 9.2
+
+# In[334]:
+
+
+NUM = aoc_9_1()
+
+
+# In[346]:
+
+
+TEST_NUM = aoc_9_1(test_inp, 5)
+
+
+# In[359]:
+
+
+def find_contiguous_nums(nums, invalid_num, verbose=False):
+    for start_idx, _ in enumerate(nums):
+        iter_nums = iter(nums[start_idx:])
+        cont_nums = []
+        try:
+            while sum(cont_nums) < invalid_num:
+                cont_nums.append(next(iter_nums))
+                if verbose:
+                    print(cont_nums, sum(cont_nums))
+                if sum(cont_nums) == invalid_num:
+                    return cont_nums
+        except StopIteration:
+            continue
+    return None
+
+
+# In[360]:
+
+
+def aoc_9_2(inp=inp, invalid_num=NUM, verbose=False):
+    nums = tuple(int(n) for n in inp.splitlines())
+    contiguous_nums = find_contiguous_nums(nums, invalid_num, verbose)
+    return min(contiguous_nums) + max(contiguous_nums)
+
+
+# In[361]:
+
+
+aoc_9_2(test_inp, TEST_NUM, True)
+
+
+# In[362]:
+
+
+aoc_9_2()
 
 
 # In[ ]:
