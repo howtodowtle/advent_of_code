@@ -3,19 +3,19 @@
 
 # # Setup
 
-# In[177]:
+# In[215]:
 
 
 get_ipython().system(' jupyter nbconvert --to python Advent_of_Code_2020.ipynb')
 
 
-# In[99]:
+# In[2]:
 
 
 get_ipython().system(' mkdir -p inputs')
 
 
-# In[320]:
+# In[3]:
 
 
 def put_away_input(inp, day, overwrite=False):
@@ -32,7 +32,7 @@ def put_away_input(inp, day, overwrite=False):
         f.write(inp)
 
 
-# In[101]:
+# In[4]:
 
 
 def read_input(day):
@@ -640,7 +640,7 @@ aoc_6_2()
 
 # # 7
 
-# In[107]:
+# In[71]:
 
 
 day = 7
@@ -650,7 +650,7 @@ inp = read_input(day)
 
 # ## 7.1
 
-# In[108]:
+# In[72]:
 
 
 test_inp_1 = """light red bags contain 1 bright white bag, 2 muted yellow bags.
@@ -664,19 +664,19 @@ faded blue bags contain no other bags.
 dotted black bags contain no other bags."""
 
 
-# In[109]:
+# In[73]:
 
 
 import re
 
 
-# In[110]:
+# In[74]:
 
 
 COL = "shiny gold"
 
 
-# In[111]:
+# In[75]:
 
 
 def parse_inside_bags(inside_bags):
@@ -684,7 +684,7 @@ def parse_inside_bags(inside_bags):
     return {color: int(n) for n, color in inside_bag_tuples}
 
 
-# In[112]:
+# In[76]:
 
 
 def parse_line(line: str):
@@ -695,7 +695,7 @@ def parse_line(line: str):
     return outside_bag, inside_dict
 
 
-# In[113]:
+# In[77]:
 
 
 def parse_all_lines(inp, verbose=False):
@@ -708,7 +708,7 @@ def parse_all_lines(inp, verbose=False):
     return colors, outside, inside
 
 
-# In[114]:
+# In[78]:
 
 
 def create_parent_dict(colors, outside, inside):
@@ -719,7 +719,7 @@ def create_parent_dict(colors, outside, inside):
     return parent_dict
 
 
-# In[115]:
+# In[79]:
 
 
 def aoc_7_1(inp=inp):
@@ -738,13 +738,13 @@ def aoc_7_1(inp=inp):
     return len(checked)
 
 
-# In[116]:
+# In[80]:
 
 
 aoc_7_1(test_inp_1)
 
 
-# In[117]:
+# In[81]:
 
 
 aoc_7_1()
@@ -752,7 +752,7 @@ aoc_7_1()
 
 # ## 7.2
 
-# In[118]:
+# In[82]:
 
 
 test_inp_2 = """shiny gold bags contain 2 dark red bags.
@@ -764,7 +764,7 @@ dark blue bags contain 2 dark violet bags.
 dark violet bags contain no other bags."""
 
 
-# In[119]:
+# In[83]:
 
 
 def aoc_7_2(inp=inp, verbose=False):
@@ -787,19 +787,19 @@ def aoc_7_2(inp=inp, verbose=False):
     return get_number(COL, 1) - 1  # subtract shiny gold bag itself
 
 
-# In[120]:
+# In[84]:
 
 
 assert aoc_7_2(test_inp_1) == 32
 
 
-# In[121]:
+# In[85]:
 
 
 assert aoc_7_2(test_inp_2) == 126
 
 
-# In[122]:
+# In[86]:
 
 
 aoc_7_2()
@@ -807,7 +807,7 @@ aoc_7_2()
 
 # # 8
 
-# In[133]:
+# In[87]:
 
 
 day = 8
@@ -817,7 +817,7 @@ inp = read_input(day)
 
 # ## 8.1
 
-# In[134]:
+# In[88]:
 
 
 test_inp = """nop +0
@@ -831,7 +831,7 @@ jmp -4
 acc +6"""
 
 
-# In[138]:
+# In[89]:
 
 
 def split_instruction(inst):
@@ -840,7 +840,7 @@ def split_instruction(inst):
     return op, val
 
 
-# In[158]:
+# In[90]:
 
 
 def read_code(inp):
@@ -848,7 +848,7 @@ def read_code(inp):
                  for inst in inp.splitlines())
 
 
-# In[217]:
+# In[91]:
 
 
 def aoc_8_1(inp=inp, verbose=False):
@@ -868,19 +868,19 @@ def aoc_8_1(inp=inp, verbose=False):
             print(f"[{op:} {val:2}] - accumulator now at {acc}, jumping to idx {idx}.")
 
 
-# In[218]:
+# In[92]:
 
 
 aoc_8_1(test_inp, verbose=True)
 
 
-# In[219]:
+# In[93]:
 
 
 assert aoc_8_1(test_inp) == 5
 
 
-# In[220]:
+# In[94]:
 
 
 aoc_8_1()
@@ -888,7 +888,7 @@ aoc_8_1()
 
 # ## 8.2
 
-# In[256]:
+# In[95]:
 
 
 def split_instruction(inst, immutable=True):
@@ -898,7 +898,7 @@ def split_instruction(inst, immutable=True):
     return iter_func((op, val))
 
 
-# In[257]:
+# In[96]:
 
 
 def read_code(inp, immutable=True):
@@ -907,7 +907,7 @@ def read_code(inp, immutable=True):
                      for inst in inp.splitlines())
 
 
-# In[297]:
+# In[97]:
 
 
 def is_finite(code):
@@ -926,13 +926,13 @@ def is_finite(code):
         idx += val if op == "jmp" else 1
 
 
-# In[298]:
+# In[98]:
 
 
 from copy import deepcopy
 
 
-# In[299]:
+# In[99]:
 
 
 def aoc_8_2(inp=inp):
@@ -948,13 +948,13 @@ def aoc_8_2(inp=inp):
             return acc
 
 
-# In[300]:
+# In[100]:
 
 
 aoc_8_2(test_inp)
 
 
-# In[294]:
+# In[101]:
 
 
 aoc_8_2()
@@ -962,7 +962,7 @@ aoc_8_2()
 
 # # 9
 
-# In[321]:
+# In[102]:
 
 
 day = 9
@@ -972,7 +972,7 @@ inp = read_input(day)
 
 # ## 9.1
 
-# In[301]:
+# In[103]:
 
 
 test_inp = """35
@@ -997,13 +997,13 @@ test_inp = """35
 576"""
 
 
-# In[312]:
+# In[104]:
 
 
 import itertools as it
 
 
-# In[313]:
+# In[105]:
 
 
 def is_valid(n, previous_nums):
@@ -1013,7 +1013,7 @@ def is_valid(n, previous_nums):
     return False
 
 
-# In[331]:
+# In[106]:
 
 
 def aoc_9_1(inp=inp, preamble_len=25, verbose=False):
@@ -1028,13 +1028,13 @@ def aoc_9_1(inp=inp, preamble_len=25, verbose=False):
             return n
 
 
-# In[332]:
+# In[107]:
 
 
 aoc_9_1(test_inp, 5, verbose=True)
 
 
-# In[333]:
+# In[108]:
 
 
 aoc_9_1()
@@ -1042,19 +1042,19 @@ aoc_9_1()
 
 # ## 9.2
 
-# In[334]:
+# In[109]:
 
 
 NUM = aoc_9_1()
 
 
-# In[346]:
+# In[110]:
 
 
 TEST_NUM = aoc_9_1(test_inp, 5)
 
 
-# In[359]:
+# In[111]:
 
 
 def find_contiguous_nums(nums, invalid_num, verbose=False):
@@ -1073,7 +1073,7 @@ def find_contiguous_nums(nums, invalid_num, verbose=False):
     return None
 
 
-# In[360]:
+# In[112]:
 
 
 def aoc_9_2(inp=inp, invalid_num=NUM, verbose=False):
@@ -1082,20 +1082,222 @@ def aoc_9_2(inp=inp, invalid_num=NUM, verbose=False):
     return min(contiguous_nums) + max(contiguous_nums)
 
 
-# In[361]:
+# In[113]:
 
 
 aoc_9_2(test_inp, TEST_NUM, True)
 
 
-# In[362]:
+# In[114]:
 
 
 aoc_9_2()
 
 
+# # 10
+
+# In[173]:
+
+
+day = 10
+# put_away_input(inp, day)
+inp = read_input(day)
+
+
+# ## 10.1
+
+# In[115]:
+
+
+test_inp_1 = """16
+10
+15
+5
+1
+11
+7
+19
+6
+12
+4"""
+
+
+# In[116]:
+
+
+test_inp_2 = """28
+33
+18
+42
+31
+14
+46
+20
+48
+47
+24
+23
+49
+45
+19
+38
+39
+11
+1
+32
+25
+35
+8
+17
+7
+9
+4
+2
+34
+10
+3"""
+
+
+# In[186]:
+
+
+def get_adapters(inp):
+    return sorted([int(a) for a in inp.splitlines()])
+
+
+# In[187]:
+
+
+def extend_adapters(adp):
+    return [0] + adp + [adp[-1] + 3]
+
+
+# In[188]:
+
+
+def get_diffs(adp, diff=1):
+    ext = extend_adapters(adp)
+    return sum(1 for idx, a1 in enumerate(ext[:-1])
+               if ext[idx+1] - a1 == diff)
+
+
+# In[189]:
+
+
+def aoc_10_1(inp=inp):
+    adp = get_adapters(inp)
+    return get_diffs(adp, 1) * get_diffs(adp, 3)
+
+
+# In[190]:
+
+
+aoc_10_1()
+
+
+# ## 10.2
+
+# - Count which adapters can be skipped.
+# - Multiply these with each other.
+# - Sometimes multiple adapters can be skipped, not sure if special case (I think so).
+
+# In[261]:
+
+
+def can_be_skipped(idx, ext):
+    assert 0 < idx < len(ext) - 1
+    return ext[idx+1] - ext[idx-1] <= 3
+
+
+# In[262]:
+
+
+def pair_can_be_skipped(idx, ext):
+    assert 0 < idx < len(ext) - 2
+    return ext[idx+2] - ext[idx-1] <= 3
+
+
+# In[288]:
+
+
+adp = get_adapters(test_inp_1)
+
+
+# In[289]:
+
+
+ext = extend_adapters(adp)
+
+
+# In[290]:
+
+
+len(ext)
+
+
+# In[291]:
+
+
+for idx, num in enumerate(ext):
+    if 0 < idx < len(ext) - 1:
+        cbs = can_be_skipped(idx, ext)
+        if idx != len(ext) - 2:
+            pcbs = pair_can_be_skipped(idx, ext)
+            print(num, cbs, pcbs)
+        else:
+            print(num, cbs)
+
+
+# In[273]:
+
+
+ctr, pctr = 0, 0
+for idx, num in enumerate(ext):
+    if 0 < idx < len(ext) - 1:
+        ctr += can_be_skipped(idx, ext)
+    if 0 < idx < len(ext) - 2:
+        pctr += pair_can_be_skipped(idx, ext)
+ctr, pctr
+
+
+# In[274]:
+
+
+adp = get_adapters(test_inp_2)
+
+
+# In[275]:
+
+
+ext = extend_adapters(adp)
+
+
+# In[276]:
+
+
+len(ext)
+
+
+# In[277]:
+
+
+ctr, pctr = 0, 0
+for idx, num in enumerate(ext):
+    if 0 < idx < len(ext) - 1:
+        ctr += can_be_skipped(idx, ext)
+    if 0 < idx < len(ext) - 2:
+        pctr += pair_can_be_skipped(idx, ext)
+ctr, pctr
+
+
 # In[ ]:
 
 
+assert aoc_10_2(test_inp_1) == 8
 
+
+# In[ ]:
+
+
+assert aoc_10_2(test_inp_2) == 19_208
 
