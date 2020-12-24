@@ -3,7 +3,7 @@
 
 # # Setup
 
-# In[215]:
+# In[224]:
 
 
 get_ipython().system(' jupyter nbconvert --to python Advent_of_Code_2020.ipynb')
@@ -1096,7 +1096,7 @@ aoc_9_2()
 
 # # 10
 
-# In[173]:
+# In[115]:
 
 
 day = 10
@@ -1106,7 +1106,7 @@ inp = read_input(day)
 
 # ## 10.1
 
-# In[115]:
+# In[116]:
 
 
 test_inp_1 = """16
@@ -1122,7 +1122,7 @@ test_inp_1 = """16
 4"""
 
 
-# In[116]:
+# In[117]:
 
 
 test_inp_2 = """28
@@ -1158,21 +1158,21 @@ test_inp_2 = """28
 3"""
 
 
-# In[186]:
+# In[273]:
 
 
 def get_adapters(inp):
     return sorted([int(a) for a in inp.splitlines()])
 
 
-# In[187]:
+# In[274]:
 
 
 def extend_adapters(adp):
     return [0] + adp + [adp[-1] + 3]
 
 
-# In[188]:
+# In[120]:
 
 
 def get_diffs(adp, diff=1):
@@ -1181,7 +1181,7 @@ def get_diffs(adp, diff=1):
                if ext[idx+1] - a1 == diff)
 
 
-# In[189]:
+# In[121]:
 
 
 def aoc_10_1(inp=inp):
@@ -1189,7 +1189,7 @@ def aoc_10_1(inp=inp):
     return get_diffs(adp, 1) * get_diffs(adp, 3)
 
 
-# In[190]:
+# In[122]:
 
 
 aoc_10_1()
@@ -1197,107 +1197,63 @@ aoc_10_1()
 
 # ## 10.2
 
-# - Count which adapters can be skipped.
-# - Multiply these with each other.
-# - Sometimes multiple adapters can be skipped, not sure if special case (I think so).
-
-# In[261]:
+# In[267]:
 
 
-def can_be_skipped(idx, ext):
-    assert 0 < idx < len(ext) - 1
-    return ext[idx+1] - ext[idx-1] <= 3
+TEST_SOL_1, TEST_SOL_2 = 8, 19_208
 
 
-# In[262]:
+# In[268]:
 
 
-def pair_can_be_skipped(idx, ext):
-    assert 0 < idx < len(ext) - 2
-    return ext[idx+2] - ext[idx-1] <= 3
+from functools import lru_cache
 
 
-# In[288]:
+# In[280]:
 
 
-adp = get_adapters(test_inp_1)
+from typing import *
 
 
-# In[289]:
+# In[281]:
 
 
-ext = extend_adapters(adp)
+@lru_cache(200)
+def paths_to_n(n: int, chain: Tuple[int]) -> int:
+    """Note: Chain must be immutable to be cached, so pass a tuple!"""
+    if n not in chain:
+        return 0
+    if n == 0 or n == 1: # and n in chain (implicit)
+        return 1
+    if n == 2: # and n in chain
+        return 2 if 1 in chain else 1
+    return (  paths_to_n(n-3, chain)
+            + paths_to_n(n-2, chain)
+            + paths_to_n(n-1, chain))
 
 
-# In[290]:
+# In[282]:
 
 
-len(ext)
+def aoc_10_2(inp=inp):
+    chain = extend_adapters(get_adapters(inp))
+    return paths_to_n(max(chain), tuple(chain))
 
 
-# In[291]:
+# In[283]:
 
 
-for idx, num in enumerate(ext):
-    if 0 < idx < len(ext) - 1:
-        cbs = can_be_skipped(idx, ext)
-        if idx != len(ext) - 2:
-            pcbs = pair_can_be_skipped(idx, ext)
-            print(num, cbs, pcbs)
-        else:
-            print(num, cbs)
+assert aoc_10_2(test_inp_1) == TEST_SOL_1
 
 
-# In[273]:
+# In[284]:
 
 
-ctr, pctr = 0, 0
-for idx, num in enumerate(ext):
-    if 0 < idx < len(ext) - 1:
-        ctr += can_be_skipped(idx, ext)
-    if 0 < idx < len(ext) - 2:
-        pctr += pair_can_be_skipped(idx, ext)
-ctr, pctr
+assert aoc_10_2(test_inp_2) == TEST_SOL_2
 
 
-# In[274]:
+# In[285]:
 
 
-adp = get_adapters(test_inp_2)
-
-
-# In[275]:
-
-
-ext = extend_adapters(adp)
-
-
-# In[276]:
-
-
-len(ext)
-
-
-# In[277]:
-
-
-ctr, pctr = 0, 0
-for idx, num in enumerate(ext):
-    if 0 < idx < len(ext) - 1:
-        ctr += can_be_skipped(idx, ext)
-    if 0 < idx < len(ext) - 2:
-        pctr += pair_can_be_skipped(idx, ext)
-ctr, pctr
-
-
-# In[ ]:
-
-
-assert aoc_10_2(test_inp_1) == 8
-
-
-# In[ ]:
-
-
-assert aoc_10_2(test_inp_2) == 19_208
+aoc_10_2()
 
