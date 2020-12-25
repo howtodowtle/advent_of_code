@@ -3,7 +3,7 @@
 
 # # Setup
 
-# In[1]:
+# In[433]:
 
 
 get_ipython().system(' jupyter nbconvert --to python Advent_of_Code_2020.ipynb')
@@ -1304,83 +1304,13 @@ import numpy as np
 from typing import *
 
 
-# In[251]:
-
-
-pa_og = transform_and_pad(TEST_INP)
-
-
-# In[278]:
-
-
-pa_og
-
-
-# In[279]:
-
-
-(pa_og > 0).sum()
-
-
-# In[280]:
-
-
-pa_manipulated = pa_og.copy()
-for r, c in range_2d_without_padding(*pa_og.shape):
-    pa_manipulated[r, c] = check_one_element(pa_og, r, c)
-pa_manipulated, (pa_manipulated == pa_og).all(), (pa_manipulated > 0).sum()
-
-
-# In[281]:
-
-
-pa_og = pa_manipulated.copy()
-
-
-# In[244]:
-
-
-r, c = (2, 3)
-
-
-# In[248]:
-
-
-slice_ = pa_manipulated[r-1:r+2, c-1:c+2]
-
-
-# In[249]:
-
-
-slice_
-
-
-# In[224]:
-
-
-do_one_iteration(pa_before_iteration)
-
-
-# In[223]:
-
-
-(pa > 0).sum()
-
-
-# In[213]:
-
-
-(pa == pa_before_iteration).all()
-
-
-# In[297]:
+# In[439]:
 
 
 def transform_and_pad(inp: str) -> np.array:
     mapping = {"L": -1, ".": 0, "#": 1}
-    arr = []
-    for row in inp.splitlines(): 
-        arr.append([mapping[k] for k in row])
+    arr = [[mapping[k] for k in row]
+           for row in inp.splitlines()]
     return np.pad(arr, 1)
 
 
@@ -1446,10 +1376,10 @@ def aoc_11_1(inp=inp):
 assert aoc_11_1(TEST_INP) == TEST_SOL
 
 
-# In[305]:
+# In[441]:
 
 
-aoc_11_1()
+get_ipython().run_line_magic('time', 'aoc_11_1()  # slow')
 
 
 # ## 11.2
@@ -1553,8 +1483,114 @@ def aoc_11_2(inp=inp):
 assert aoc_11_2(TEST_INP) == TEST_SOL_2
 
 
-# In[432]:
+# In[440]:
 
 
-aoc_11_2()  # slow
+get_ipython().run_line_magic('time', 'aoc_11_2()  # slow')
+
+
+# ## simplify & unify 10.1 & 10.2
+
+# - keep strings, don't convert to array
+# - use a `Counter`
+# - refactor functions to work for both parts
+
+# In[442]:
+
+
+from collections import Counter
+
+
+# In[445]:
+
+
+Grid = List[List[str]]
+
+
+# In[504]:
+
+
+def process_seat(grid: Grid, r: int, c: int, part: int) -> int:
+    """Element-wise, quite inefficient. But not sure how to implement
+    these rules vectorized.
+    """
+    assert part in (1, 2), f"Only parts 1 and 2 available, you passed part {part}."
+    
+    nrows, ncols = len(grid), len(grid[0])
+    
+    def direct_neighbor(grid, r, c, dr, dc):
+        return grid[r + dr][c + dc]
+    
+    def next_in_lov(grid, r, c, dr, dc):
+        s = "."
+        while s not in ("#", "L"):
+            r += dr
+            c += dc
+            if not (0 <= r < nrows and 0 <= c < ncols):
+                return "."
+            s = grid[r][c]
+        return s
+    
+    neighbor_func = next_in_lov if part == 2 else direct_neighbor
+    threshold = 5 if part == 2 else 4
+    
+    seat = grid[r][c]
+    
+    if seat == ".":
+        return seat
+    
+    counts = Counter(neighbor_func(grid, r, c, dr, dc)
+                     for dr, dc in range_over_lines_of_vision()
+                     if 0 <= r + dr < nrows and 0 <= c + dc < ncols)
+    
+    if seat == "L" and counts["#"] == 0:
+        return "#"
+    if seat == "#" and counts["#"] >= threshold:
+        return "L"
+    return seat
+
+
+# In[505]:
+
+
+def do_one_iteration(grid: Grid, part: int) -> Tuple[Grid, bool]:
+    manipulated_grid = [[process_seat(grid, ri, ci, part)
+                         for ci, _ in enumerate(row)]
+                         for ri, row in enumerate(grid)]
+    return manipulated_grid, manipulated_grid == grid
+
+
+# In[506]:
+
+
+def aoc_11(inp=inp, part=1):
+    grid = [[seat for seat in row] for row in inp.splitlines()]
+    stable = False
+    while not stable:
+        grid, stable = do_one_iteration(grid, part)
+    return sum(row.count("#") for row in grid)
+
+
+# In[509]:
+
+
+assert aoc_11(TEST_INP, part=1) == TEST_SOL
+
+
+# In[511]:
+
+
+assert aoc_11(TEST_INP, part=2) == TEST_SOL_2
+
+
+# In[512]:
+
+
+get_ipython().run_line_magic('time', 'aoc_11(part=1)  # still slow')
+
+
+# In[513]:
+
+
+get_ipython().run_line_magic('time', 'aoc_11(part=2)  # still slow')
 
