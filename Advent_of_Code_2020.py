@@ -3,7 +3,7 @@
 
 # # Setup
 
-# In[224]:
+# In[1]:
 
 
 get_ipython().system(' jupyter nbconvert --to python Advent_of_Code_2020.ipynb')
@@ -1158,14 +1158,14 @@ test_inp_2 = """28
 3"""
 
 
-# In[273]:
+# In[118]:
 
 
 def get_adapters(inp):
     return sorted([int(a) for a in inp.splitlines()])
 
 
-# In[274]:
+# In[119]:
 
 
 def extend_adapters(adp):
@@ -1197,30 +1197,31 @@ aoc_10_1()
 
 # ## 10.2
 
-# In[267]:
+# In[123]:
 
 
 TEST_SOL_1, TEST_SOL_2 = 8, 19_208
 
 
-# In[268]:
+# In[124]:
 
 
 from functools import lru_cache
 
 
-# In[280]:
+# In[125]:
 
 
 from typing import *
 
 
-# In[281]:
+# In[126]:
 
 
 @lru_cache(200)
 def paths_to_n(n: int, chain: Tuple[int]) -> int:
-    """Note: Chain must be immutable to be cached, so pass a tuple!"""
+    """Note: Chain must be immutable to be cached, so pass a tuple!
+    Will return 0 for any n < 0 (even if it were in chain)."""
     if n not in chain:
         return 0
     if n == 0 or n == 1: # and n in chain (implicit)
@@ -1232,7 +1233,7 @@ def paths_to_n(n: int, chain: Tuple[int]) -> int:
             + paths_to_n(n-1, chain))
 
 
-# In[282]:
+# In[127]:
 
 
 def aoc_10_2(inp=inp):
@@ -1240,20 +1241,320 @@ def aoc_10_2(inp=inp):
     return paths_to_n(max(chain), tuple(chain))
 
 
-# In[283]:
+# In[128]:
 
 
 assert aoc_10_2(test_inp_1) == TEST_SOL_1
 
 
-# In[284]:
+# In[129]:
 
 
 assert aoc_10_2(test_inp_2) == TEST_SOL_2
 
 
-# In[285]:
+# In[130]:
 
 
 aoc_10_2()
+
+
+# # 11
+
+# In[287]:
+
+
+day = 11
+# put_away_input(inp, day)
+inp = read_input(day)
+
+
+# ## 11.1
+
+# In[134]:
+
+
+TEST_INP = """L.LL.LL.LL
+LLLLLLL.LL
+L.L.L..L..
+LLLL.LL.LL
+L.LL.LL.LL
+L.LLLLL.LL
+..L.L.....
+LLLLLLLLLL
+L.LLLLLL.L
+L.LLLLL.LL"""
+
+
+# In[135]:
+
+
+TEST_SOL = 37
+
+
+# In[137]:
+
+
+import numpy as np
+
+
+# In[422]:
+
+
+from typing import *
+
+
+# In[251]:
+
+
+pa_og = transform_and_pad(TEST_INP)
+
+
+# In[278]:
+
+
+pa_og
+
+
+# In[279]:
+
+
+(pa_og > 0).sum()
+
+
+# In[280]:
+
+
+pa_manipulated = pa_og.copy()
+for r, c in range_2d_without_padding(*pa_og.shape):
+    pa_manipulated[r, c] = check_one_element(pa_og, r, c)
+pa_manipulated, (pa_manipulated == pa_og).all(), (pa_manipulated > 0).sum()
+
+
+# In[281]:
+
+
+pa_og = pa_manipulated.copy()
+
+
+# In[244]:
+
+
+r, c = (2, 3)
+
+
+# In[248]:
+
+
+slice_ = pa_manipulated[r-1:r+2, c-1:c+2]
+
+
+# In[249]:
+
+
+slice_
+
+
+# In[224]:
+
+
+do_one_iteration(pa_before_iteration)
+
+
+# In[223]:
+
+
+(pa > 0).sum()
+
+
+# In[213]:
+
+
+(pa == pa_before_iteration).all()
+
+
+# In[297]:
+
+
+def transform_and_pad(inp: str) -> np.array:
+    mapping = {"L": -1, ".": 0, "#": 1}
+    arr = []
+    for row in inp.splitlines(): 
+        arr.append([mapping[k] for k in row])
+    return np.pad(arr, 1)
+
+
+# In[298]:
+
+
+def check_one_element(pa: np.array, r: int, c: int) -> int:
+    """Element-wise, quite inefficient. But not sure how to implement
+    these rules vectorized.
+    """
+    el = pa[r, c].item()
+    if el == 0:
+        return 0
+    slice_ = pa[r - 1 : r + 2, c - 1 : c + 2]
+    if el == -1 and (slice_ < 1).all():
+        return 1
+    if el == 1 and (slice_ > 0).sum() > 4:  # > 4 b/c el is included in slice_
+        return -1
+    return el
+
+
+# In[306]:
+
+
+def loop_over_array_without_padding(nrows, ncols) -> Iterator:
+    for r in range(1, nrows - 1):
+        for c in range(1, ncols - 1):
+            yield (r, c)
+
+
+# In[307]:
+
+
+def check_matrix(pa: np.array) -> np.array:
+    pa_manipulated = pa.copy()
+    for r, c in loop_over_array_without_padding(*pa.shape):
+        pa_manipulated[r, c] = check_one_element(pa, r, c)
+    return pa_manipulated
+
+
+# In[302]:
+
+
+def do_one_iteration(pa_og: np.array) -> Tuple[np.array, bool]:
+    pa_manipulated = check_matrix(pa_og)
+    return pa_manipulated, (pa_manipulated == pa_og).all()
+
+
+# In[303]:
+
+
+def aoc_11_1(inp=inp):
+    padded_arr = transform_and_pad(inp)
+    stable = False
+    while not stable:
+        padded_arr, stable = do_one_iteration(padded_arr)
+    return (padded_arr > 0).sum()
+
+
+# In[304]:
+
+
+assert aoc_11_1(TEST_INP) == TEST_SOL
+
+
+# In[305]:
+
+
+aoc_11_1()
+
+
+# ## 11.2
+
+# - no need to pad (but can keep it padded b/c not looping over padding an 0s are neutral anyway)
+# - replace `slice_` with `visible_` (can be a flat array/list), replace 4 by 5, done.
+# - visible:
+#     - 8 lines of vision
+#     - first non-zero element counts --> lazy evaluation
+
+# In[423]:
+
+
+TEST_SOL_2 = 26
+
+
+# In[424]:
+
+
+def evaluate_line_of_vision(a, r, c, delta_r, delta_c) -> int:
+    nrows, ncols = a.shape
+    seat = 0
+    while not seat:
+        r += delta_r
+        c += delta_c
+        if not (0 < r < nrows - 1 and 0 < c < ncols - 1):
+            return 0
+        seat = a[r, c]
+    return seat
+
+
+# In[425]:
+
+
+def seat_can_see(a, r, c):
+    return np.array([evaluate_line_of_vision(a, r, c, delta_r, delta_c)
+                     for delta_r, delta_c in range_over_lines_of_vision()])
+
+
+# In[426]:
+
+
+def range_over_lines_of_vision():
+    directions = (-1, 0, 1)
+    for delta_r in directions:
+        for delta_c in directions:
+            if not delta_r == delta_c == 0:
+                yield delta_r, delta_c
+
+
+# In[427]:
+
+
+def check_one_element_2(pa: np.array, r: int, c: int) -> int:
+    """Element-wise, quite inefficient. But not sure how to implement
+    these rules vectorized.
+    """
+    el = pa[r, c].item()
+    if el == 0:
+        return 0
+    seen_seats = seat_can_see(pa, r, c)
+    if el == -1 and (seen_seats < 1).all():
+        return 1
+    if el == 1 and (seen_seats > 0).sum() > 4:  # > 4 b/c el is not included in seen_seats
+        return -1
+    return el
+
+
+# In[428]:
+
+
+def check_matrix_2(pa: np.array) -> np.array:
+    pa_manipulated = pa.copy()
+    for r, c in loop_over_array_without_padding(*pa.shape):
+        pa_manipulated[r, c] = check_one_element_2(pa, r, c)
+    return pa_manipulated
+
+
+# In[429]:
+
+
+def do_one_iteration_2(pa_og: np.array) -> Tuple[np.array, bool]:
+    pa_manipulated = check_matrix_2(pa_og)
+    return pa_manipulated, (pa_manipulated == pa_og).all()
+
+
+# In[430]:
+
+
+def aoc_11_2(inp=inp):
+    padded_arr = transform_and_pad(inp)
+    stable = False
+    while not stable:
+        padded_arr, stable = do_one_iteration_2(padded_arr)
+    return (padded_arr > 0).sum()
+
+
+# In[431]:
+
+
+assert aoc_11_2(TEST_INP) == TEST_SOL_2
+
+
+# In[432]:
+
+
+aoc_11_2()  # slow
 
