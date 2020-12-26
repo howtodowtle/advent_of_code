@@ -9,13 +9,13 @@
 get_ipython().system(' jupyter nbconvert --to python Advent_of_Code_2020.ipynb')
 
 
-# In[2]:
+# In[4]:
 
 
 get_ipython().system(' mkdir -p inputs')
 
 
-# In[3]:
+# In[5]:
 
 
 def put_away_input(inp, day, overwrite=False):
@@ -32,7 +32,7 @@ def put_away_input(inp, day, overwrite=False):
         f.write(inp)
 
 
-# In[4]:
+# In[6]:
 
 
 def read_input(day):
@@ -1096,7 +1096,7 @@ aoc_9_2()
 
 # # 10
 
-# In[115]:
+# In[10]:
 
 
 day = 10
@@ -1261,7 +1261,7 @@ aoc_10_2()
 
 # # 11
 
-# In[287]:
+# In[8]:
 
 
 day = 11
@@ -1593,4 +1593,182 @@ get_ipython().run_line_magic('time', 'aoc_11(part=1)  # still slow')
 
 
 get_ipython().run_line_magic('time', 'aoc_11(part=2)  # still slow')
+
+
+# # 12
+
+# In[120]:
+
+
+day = 12
+# put_away_input(inp, day)
+inp = read_input(day)
+
+
+# ## 12.1
+
+# In[16]:
+
+
+from typing import *
+
+
+# In[35]:
+
+
+import itertools as it
+
+
+# In[13]:
+
+
+DIRS = ("N", "E", "S", "W")
+
+
+# In[32]:
+
+
+DEGS = (90, 180, 270)
+
+
+# In[33]:
+
+
+SIDES = ("R", "L")
+
+
+# In[97]:
+
+
+DIR_MAPPING = dict(zip(DIRS,((-1, 0), (0, 1), (1, 0), (0, -1))))
+
+
+# In[98]:
+
+
+DIR_MAPPING
+
+
+# In[19]:
+
+
+# x: N is -, S is +
+# y: W is -, E is +
+# z: N is 0, E is 1, S is 2, W is 3
+
+
+# In[14]:
+
+
+TEST_INP = """F10
+N3
+F7
+R90
+F11
+"""
+
+
+# In[20]:
+
+
+Position = Tuple[int, int, str]  # NS, WE, orientation
+
+
+# In[81]:
+
+
+START_POS = 0, 0, "E"
+
+
+# In[161]:
+
+
+def move(act: str, num: int, curr_pos: Position) -> Position:
+    assert act in DIRS
+    x, y, z = curr_pos
+    if act == "N":
+        x -= num
+    elif act == "S":
+        x += num
+    elif act == "W":
+        y -= num
+    elif act == "E":
+        y += num
+    return x, y, z
+
+
+# In[162]:
+
+
+def change_dir(act: str, num: int, curr_pos: Position) -> Position:
+    assert act in SIDES
+    assert num in DEGS
+    dir_ = 1 if act == "R" else -1
+    x, y, z = curr_pos
+    z_idx = DIRS.index(z)
+    z_idx += dir_ * (num // 90)
+    z = DIRS[z_idx % 4]
+    return x, y, z
+
+
+# In[163]:
+
+
+def forward(act: str, num: int, curr_pos: Position) -> Position:
+    assert act == "F"
+    x, y, z = curr_pos
+    dx, dy = DIR_MAPPING[z]
+    x += dx * num
+    y += dy * num
+    return x, y, z
+
+
+# In[164]:
+
+
+def next_position(instr: str, curr_pos: Position) -> Position:
+    action, num = instr[:1], int(instr[1:])
+    if action in DIRS:
+        return move(action, num, curr_pos)
+    elif action in SIDES:
+        return change_dir(action, num, curr_pos)
+    elif action == "F":
+        return forward(action, num, curr_pos)
+
+
+# In[165]:
+
+
+def aoc_12_1(inp=inp):
+    pos = START_POS
+    for instr in inp.splitlines():
+        pos = next_position(instr, pos)
+    x, y, z = pos
+    return abs(x) + abs(y)
+
+
+# In[166]:
+
+
+assert aoc_12_1(TEST_INP) == 25
+
+
+# In[167]:
+
+
+aoc_12_1()
+
+
+# ## 12.2
+
+# In[168]:
+
+
+START_WAYPOINT = (-10, 100)
+
+
+# In[ ]:
+
+
+
 
