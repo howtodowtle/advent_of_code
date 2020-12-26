@@ -3,7 +3,7 @@
 
 # # Setup
 
-# In[433]:
+# In[169]:
 
 
 get_ipython().system(' jupyter nbconvert --to python Advent_of_Code_2020.ipynb')
@@ -1723,7 +1723,7 @@ def forward(act: str, num: int, curr_pos: Position) -> Position:
     return x, y, z
 
 
-# In[164]:
+# In[174]:
 
 
 def next_position(instr: str, curr_pos: Position) -> Position:
@@ -1761,14 +1761,98 @@ aoc_12_1()
 
 # ## 12.2
 
-# In[168]:
+# In[176]:
 
 
-START_WAYPOINT = (-10, 100)
+START_WAYPOINT = (-1, 10)
 
 
-# In[ ]:
+# In[170]:
 
 
+Coords = Tuple[int, int]
 
+
+# In[184]:
+
+
+def move_wp(act: str, num: int, ship: Coords, wp: Coords) -> Coords:
+    assert act in DIRS
+    wp_ns, wp_we = wp
+    if act == "N":
+        wp_ns -= num
+    elif act == "S":
+        wp_ns += num
+    elif act == "W":
+        wp_we -= num
+    elif act == "E":
+        wp_we += num
+    return ship, (wp_ns, wp_we)
+
+
+# In[223]:
+
+
+def rotate_wp(act: str, num: int, ship: Coords, wp: Coords) -> Coords:
+    assert act in SIDES
+    assert num in DEGS
+    wp_ns, wp_we = wp
+    dir_ = 1 if act == "R" else -1
+    if num == 90:
+        wp_ns, wp_we = dir_ * wp_we, dir_ * wp_ns * (-1)
+    elif num == 180:
+        wp_ns *= -1
+        wp_we *= -1
+    elif num == 270:
+        wp_ns, wp_we = dir_ * wp_we * (-1), dir_ * wp_ns
+    return ship, (wp_ns, wp_we)
+
+
+# In[224]:
+
+
+def towards_wp(act: str, num: int, ship: Coords, wp: Coords) -> Coords:
+    assert act == "F"
+    wp_ns, wp_we = wp
+    sh_ns, sh_we = ship
+    sh_ns += num * wp_ns
+    sh_we += num * wp_we
+    return (sh_ns, sh_we), (wp_ns, wp_we)
+
+
+# In[225]:
+
+
+def next_position_wp(instr: str, ship: Coords, wp: Coords) -> Coords:
+    action, num = instr[:1], int(instr[1:])
+    if action in DIRS:
+        return move_wp(action, num, ship, wp)
+    elif action in SIDES:
+        return rotate_wp(action, num, ship, wp)
+    elif action == "F":
+        return towards_wp(action, num, ship, wp)
+    raise
+
+
+# In[229]:
+
+
+def aoc_12_2(inp=inp):
+    ship, wp = START_POS[:2], START_WAYPOINT
+    for instr in inp.splitlines():
+        ship, wp = next_position_wp(instr, ship, wp)
+    x, y = ship
+    return abs(x) + abs(y)
+
+
+# In[230]:
+
+
+assert aoc_12_2(TEST_INP) == 286
+
+
+# In[231]:
+
+
+aoc_12_2()
 
