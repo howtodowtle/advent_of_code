@@ -3,19 +3,19 @@
 
 # # Setup
 
-# In[169]:
+# In[515]:
 
 
 get_ipython().system(' jupyter nbconvert --to python Advent_of_Code_2020.ipynb')
 
 
-# In[4]:
+# In[516]:
 
 
 get_ipython().system(' mkdir -p inputs')
 
 
-# In[5]:
+# In[517]:
 
 
 def put_away_input(inp, day, overwrite=False):
@@ -32,7 +32,7 @@ def put_away_input(inp, day, overwrite=False):
         f.write(inp)
 
 
-# In[6]:
+# In[518]:
 
 
 def read_input(day):
@@ -483,7 +483,7 @@ day = 5
 inp = read_input(day)
 
 
-# # 5.1
+# ## 5.1
 
 # ```
 # BFFFBBFRRR: row 70, column 7, seat ID 567.
@@ -1649,6 +1649,12 @@ DIR_MAPPING = dict(zip(DIRS,((-1, 0), (0, 1), (1, 0), (0, -1))))
 DIR_MAPPING
 
 
+# In[81]:
+
+
+START_POS = 0, 0, "E"
+
+
 # In[19]:
 
 
@@ -1668,21 +1674,22 @@ F11
 """
 
 
-# In[20]:
+# In[234]:
+
+
+from typing import Tuple
+
+
+# In[235]:
 
 
 Position = Tuple[int, int, str]  # NS, WE, orientation
 
 
-# In[81]:
+# In[236]:
 
 
-START_POS = 0, 0, "E"
-
-
-# In[161]:
-
-
+# def move(act: str, num: int, curr_pos: Tuple[int, int, str]) -> Tuple[int, int, str]:
 def move(act: str, num: int, curr_pos: Position) -> Position:
     assert act in DIRS
     x, y, z = curr_pos
@@ -1855,4 +1862,195 @@ assert aoc_12_2(TEST_INP) == 286
 
 
 aoc_12_2()
+
+
+# # 13
+
+# In[519]:
+
+
+day = 13
+#put_away_input(inp, day)
+inp = read_input(day)
+
+
+# ## 13.1
+
+# In[520]:
+
+
+from typing import *
+
+
+# In[521]:
+
+
+TEST_INP = """939
+7,13,x,x,59,x,31,19"""
+
+
+# In[522]:
+
+
+def parse_input(inp: str) -> Tuple[int, Tuple[int]]:
+    time, buses = inp.splitlines()
+    time = int(time)
+    buses = tuple(int(bus) for bus in buses.split(",") if bus != "x")
+    return time, buses
+
+
+# In[523]:
+
+
+time, buses = parse_input(TEST_INP)
+
+
+# In[524]:
+
+
+time, buses
+
+
+# In[525]:
+
+
+def find_next_bus(time: int, buses: Tuple[int]) -> Tuple[int, int]:
+    bustimes = {bus: (time // bus + 1) * bus for bus in buses}
+    next_bus = min(bustimes, key=bustimes.get)
+    return next_bus, bustimes[next_bus]
+
+
+# In[526]:
+
+
+def aoc_13_1(inp=inp):
+    time, buses = parse_input(inp)
+    next_bus, next_time = find_next_bus(time, buses)
+    return next_bus * (next_time - time)
+
+
+# In[527]:
+
+
+aoc_13_1(TEST_INP)
+
+
+# In[528]:
+
+
+aoc_13_1()
+
+
+# ## 13.2
+
+# Works, but slow and inefficient:
+
+# In[533]:
+
+
+# Buses = Tuple[Tuple[int, int]]
+
+
+# def parse_input_2(inp: str) -> Buses:
+#     _, buses = inp.splitlines()
+#     return tuple((timestamp, int(bus)) for timestamp, bus in enumerate(buses.split(",")) if bus != "x")
+
+
+# def it_works(buses: Buses, t: int) -> bool:
+#     return all((t + dt) % bus == 0 for dt, bus in buses)
+
+
+# def yield_candidates(buses: Buses) -> Iterator[int]:
+#     large_to_small = sorted(buses, key=lambda x: x[1])[::-1]
+#     d_0, bus_0 = large_to_small[0]
+#     i = 0
+#     while True:
+#         t = i * bus_0 - d_0
+#         if it_works(buses=large_to_small[1:], t=t):
+#             yield t
+#         i += 1
+
+
+# def aoc_13_2(inp=inp):
+#     buses = parse_input_2(inp)
+#     return next(yield_candidates(buses))
+
+
+# In[724]:
+
+
+from functools import reduce
+
+
+# In[725]:
+
+
+def parse_input_2(inp: str) -> Tuple[int, int]:
+    _, buses = inp.splitlines()
+    deltas, buses =  zip(*tuple((timestamp, int(bus)) for timestamp, bus in enumerate(buses.split(",")) if bus != "x"))
+    modulos = tuple(b-d if d else 0 for d, b in zip(deltas, buses))
+    return modulos, buses
+
+
+# Next two cells from [rosettacode](https://rosettacode.org/wiki/Chinese_remainder_theorem#Python_3.6):
+
+# In[726]:
+
+
+def chinese_remainder(modulos, buses):
+    sum = 0
+    bus_product = reduce(lambda a, b: a * b, buses)
+    for m_i, b_i in zip(modulos, buses):
+        p = bus_product // b_i
+        sum += m_i * mul_inv(p, b_i) * p
+    return sum % bus_product
+
+
+# In[727]:
+
+
+def mul_inv(p, b):
+    if b == 1:
+        return 1
+    b0 = b
+    x0, x1 = 0, 1
+    while p > 1:
+        q = p // b
+        p, b = b, p % b
+        x0, x1 = x1 - q * x0, x0
+    if x1 < 0:
+        x1 += b0
+    return x1
+
+
+# In[728]:
+
+
+def aoc_13_2(inp=inp):
+    modulos, buses = parse_input_2(inp)
+    return chinese_remainder(modulos, buses)
+
+
+# In[730]:
+
+
+get_ipython().run_line_magic('timeit', 'aoc_13_2(TEST_INP)')
+
+
+# In[732]:
+
+
+assert aoc_13_2(TEST_INP) == 1068781
+
+
+# In[733]:
+
+
+aoc_13_2()
+
+
+# In[ ]:
+
+
+
 
