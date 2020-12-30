@@ -3,19 +3,19 @@
 
 # # Setup
 
-# In[515]:
+# In[735]:
 
 
 get_ipython().system(' jupyter nbconvert --to python Advent_of_Code_2020.ipynb')
 
 
-# In[516]:
+# In[736]:
 
 
 get_ipython().system(' mkdir -p inputs')
 
 
-# In[517]:
+# In[737]:
 
 
 def put_away_input(inp, day, overwrite=False):
@@ -32,7 +32,7 @@ def put_away_input(inp, day, overwrite=False):
         f.write(inp)
 
 
-# In[518]:
+# In[738]:
 
 
 def read_input(day):
@@ -2049,8 +2049,211 @@ assert aoc_13_2(TEST_INP) == 1068781
 aoc_13_2()
 
 
-# In[ ]:
+# # 14
+
+# In[740]:
 
 
+day = 14
+# put_away_input(inp, day)
+inp = read_input(day)
 
+
+# In[741]:
+
+
+TEST_INP = """mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X
+mem[8] = 11
+mem[7] = 101
+mem[8] = 0"""
+
+
+# ## 14.1
+
+# In[742]:
+
+
+import re
+
+
+# In[874]:
+
+
+Mask = Tuple[int, int]
+
+
+# In[895]:
+
+
+def parse_mask(m: str) -> Mask:
+    """Find the ints that we can use to manipulate bits
+    using bitwise 'and' to set bit to zero: n & zi
+    or bitwies 'or' to set a bit to one: n | oi.
+    """
+    zm = m.replace("X", "1")
+    om = m.replace("X", "0")
+    zi, oi = int(zm, 2), int(om, 2)
+    return zi, oi
+
+
+# In[896]:
+
+
+def parse_inp(inp: str) -> Iterator[Tuple[Mask, int, int]]:
+    """Two modes: mask mode yields (mask, None, None),
+    memory mode yields (None, pos, num).
+    """
+    for line in inp.splitlines():
+        inst, val = line.split(" = ")
+        is_mask = line.startswith("mask")
+        mask = parse_mask(val) if is_mask else None
+        pos = None if is_mask else int(re.findall(r"\[(\d+)\]", inst)[0])
+        num = None if is_mask else int(val)
+        yield (mask, pos, num)
+
+
+# In[897]:
+
+
+def apply_bitmask(mask: Mask, n: int) -> int:
+    """Change the zero-bits, then change the one-bits."""
+    zi, oi = mask
+    return n & zi | oi
+
+
+# In[891]:
+
+
+def aoc_14_1(inp: str = inp) -> int:
+    mem = {}
+    current_mask = None
+    for mask, pos, num in parse_inp(inp):
+        if mask is not None:
+            current_mask = mask
+            continue
+        mem[pos] = apply_bitmask(current_mask, num)
+    return sum(mem.values())
+
+
+# In[893]:
+
+
+assert aoc_14_1(TEST_INP) == 165
+
+
+# In[894]:
+
+
+aoc_14_1()
+
+
+# ## 14.2
+
+# In[1001]:
+
+
+TEST_INP2 = """mask = 000000000000000000000000000000X1001X
+mem[42] = 100
+mask = 00000000000000000000000000000000X0XX
+mem[26] = 1"""
+
+
+# In[935]:
+
+
+import itertools as it
+
+
+# In[974]:
+
+
+Mask2 = Tuple[Tuple[int], int]
+
+
+# In[1185]:
+
+
+def parse_mask2(m: str) -> Mask2:
+    om = m.replace("X", "0")
+    oi = int(om, 2)
+    xs = tuple(len(m) - idx - 1 for idx, val in enumerate(m) if val == "X")
+    return xs, oi
+
+
+# In[1186]:
+
+
+def parse_inp2(inp: str) -> Iterator[Mask2, int, int]:
+    """Two modes: mask mode yields (mask, None, None),
+    memory mode yields (None, pos, num).
+    """
+    for line in inp.splitlines():
+        inst, val = line.split(" = ")
+        is_mask = line.startswith("mask")
+        mask = parse_mask2(val) if is_mask else None
+        pos = None if is_mask else int(re.findall(r"\[(\d+)\]", inst)[0])
+        num = None if is_mask else int(val)
+        yield (mask, pos, num)
+
+
+# In[1114]:
+
+
+def set_bit(value: int, bit: int) -> int:
+    return value | (1 << bit)
+
+
+# In[1115]:
+
+
+def clear_bit(value: int, bit: int) -> int:
+    return value & ~(1 << bit)
+
+
+# In[1179]:
+
+
+def apply_floats(xs: Tuple[int], n: int) -> Iterator[int]:
+    floats_can_be = tuple((0, 1) for _ in xs)
+    for combination in it.product(*floats_can_be):
+        for bit, value in zip(xs, combination):
+            n = set_bit(n, bit) if value == 1 else clear_bit(n, bit)
+        yield n
+
+
+# In[1180]:
+
+
+def apply_bitmask2(mask: Mask2, n: int) -> Iterator[int]:
+    """Change the one-bits, then all combinations of floating bits."""
+    xs, oi = mask
+    return apply_floats(xs, n | oi)
+
+
+# In[1181]:
+
+
+def aoc_14_2(inp: str = inp) -> int:
+    mem = {}
+    current_mask = None
+    for mask, pos, num in parse_inp2(inp):
+        if mask is not None:
+            current_mask = mask
+            continue
+        positions = apply_bitmask2(current_mask, pos)
+        for p in positions:
+            mem[p] = num
+    return sum(mem.values())
+
+
+# In[1182]:
+
+
+assert aoc_14_2(TEST_INP2) == 208
+
+
+# In[1184]:
+
+
+aoc_14_2()
 
