@@ -3,7 +3,7 @@
 
 # # Setup
 
-# In[735]:
+# In[1291]:
 
 
 get_ipython().system(' jupyter nbconvert --to python Advent_of_Code_2020.ipynb')
@@ -2256,4 +2256,254 @@ assert aoc_14_2(TEST_INP2) == 208
 
 
 aoc_14_2()
+
+
+# # 15
+
+# In[1206]:
+
+
+inp = """0,3,1,6,7,5"""
+
+
+# In[1207]:
+
+
+day = 15
+# put_away_input(inp, day)
+inp = read_input(day)
+
+
+# In[1192]:
+
+
+EXAMPLES = """
+    Given the starting numbers 1,3,2, the 2020th number spoken is 1.
+    Given the starting numbers 2,1,3, the 2020th number spoken is 10.
+    Given the starting numbers 1,2,3, the 2020th number spoken is 27.
+    Given the starting numbers 2,3,1, the 2020th number spoken is 78.
+    Given the starting numbers 3,2,1, the 2020th number spoken is 438.
+    Given the starting numbers 3,1,2, the 2020th number spoken is 1836.
+"""
+
+
+# ## 15.1
+
+# In[1193]:
+
+
+import re
+
+
+# In[1226]:
+
+
+from collections import defaultdict
+
+
+# In[1214]:
+
+
+def parse_input(inp):
+    return tuple(int(x) for x in inp.split(","))
+
+
+# In[1263]:
+
+
+def spoken(starting_nums):
+    
+    def register(num, last_spoken, turn):
+        last_spoken[num].append(turn)
+        turn += 1
+        return num, last_spoken, turn
+    
+    last_spoken = defaultdict(list)
+    turn = 1
+    
+    for num in starting_nums:
+        last_num, last_spoken, turn = register(num, last_spoken, turn)
+        yield num
+        
+    while True:
+        occurences = last_spoken[last_num]
+        if not occurences:
+            num = last_num
+            last_num, last_spoken, turn = register(num, last_spoken, turn)
+            yield num
+        else:
+            num = occurences[-1] - occurences[-2] if len(occurences) > 1 else 0
+            last_num, last_spoken, turn = register(num, last_spoken, turn)
+            yield num
+
+
+# In[1221]:
+
+
+def yield_examples():
+    starting_nums = tuple(parse_input(x) for x in re.findall(r"starting numbers (.+), the 2020th", EXAMPLES))
+    solutions = tuple(int(z) for z in re.findall(r"spoken is (\d+).", EXAMPLES))
+    yield from zip(starting_nums, solutions)
+
+
+# In[1285]:
+
+
+for starting_nums, solution in yield_examples():
+    speak_numbers = spoken(starting_nums)
+    [next(speak_numbers) for _ in range(2019)]
+    assert next(speak_numbers) == solution
+
+
+# In[1283]:
+
+
+def aoc_15_1(inp=inp):
+    pi = parse_input(inp)
+    speak_numbers = spoken(pi)
+    [next(speak_numbers) for _ in range(2019)]
+    return next(speak_numbers)
+
+
+# In[1284]:
+
+
+aoc_15_1()
+
+
+# ## 15.2
+
+# In[1290]:
+
+
+from functools import partial
+
+
+# In[1286]:
+
+
+def aoc_15(part, inp=inp):
+    n = 2020 if part == 1 else 30_000_000
+    pi = parse_input(inp)
+    speak_numbers = spoken(pi)
+    [next(speak_numbers) for _ in range(n-1)]
+    return next(speak_numbers)
+
+
+# In[1288]:
+
+
+aoc_15_2 = partial(aoc_15, part=2)
+
+
+# In[1289]:
+
+
+aoc_15_2()
+
+
+# # 16
+
+# In[1454]:
+
+
+day = 16
+# put_away_input(inp, day)
+inp = read_input(day)
+
+
+# In[1292]:
+
+
+TEST_INP = """class: 1-3 or 5-7
+row: 6-11 or 33-44
+seat: 13-40 or 45-50
+
+your ticket:
+7,1,14
+
+nearby tickets:
+7,3,47
+40,4,50
+55,2,20
+38,6,12"""
+
+
+# ## 16.1
+
+# In[1377]:
+
+
+get_ipython().system(' pip install dataclasses')
+
+
+# In[1461]:
+
+
+import itertools as it
+import re
+from dataclasses import dataclass
+
+
+# In[1508]:
+
+
+@dataclass
+class Rule:
+    name: str
+    bounds: Tuple[int]
+        
+    def __repr__(self):
+        lolo, lohi, hilo, hihi = self.bounds
+        return f"{self.name:30}: {lolo:>3} <= n <= {lohi:<3} or {hilo:>3} <= n <= {hihi:<3}"
+    
+    def check(self, n):
+        lolo, lohi, hilo, hihi = self.bounds
+        return lolo <= n <= lohi or hilo <= n <= hihi
+
+
+# In[1490]:
+
+
+def parse_input(inp):
+    rules, my_ticket, other_tickets = inp.split("\n\n")
+    
+    def extract_rule(line):
+        name = line.split(": ")[0] 
+        bounds = tuple(int(n) for n in re.findall(r"\d+", line))    
+        return Rule(name, bounds)
+    
+    rules = tuple(extract_rule(l) for l in rules.splitlines())  # name: rule_func
+    my_ticket = tuple(int(x) for x in my_ticket.splitlines()[-1].split(","))
+    other_tickets = tuple(tuple(int(x) for x in ticket.split(","))
+                          for ticket in other_tickets.splitlines()[1:])
+    return rules, my_ticket, other_tickets
+
+
+# In[1505]:
+
+
+def aoc_16_1(inp=inp):
+    rules, _, other_tickets = parse_input(inp)
+    fail_all_rules = tuple(n for n in it.chain(*other_tickets)
+                           if not any(rule.check(n) for rule in rules))
+    return sum(fail_all_rules)
+
+
+# In[1506]:
+
+
+assert aoc_16_1(TEST_INP) == 71
+
+
+# In[1507]:
+
+
+aoc_16_1()
+
+
+# In[ ]:
+
+
+
 
