@@ -3,7 +3,7 @@
 
 # # Setup
 
-# In[1291]:
+# In[135]:
 
 
 get_ipython().system(' jupyter nbconvert --to python Advent_of_Code_2020.ipynb')
@@ -15,7 +15,7 @@ get_ipython().system(' jupyter nbconvert --to python Advent_of_Code_2020.ipynb')
 get_ipython().system(' mkdir -p inputs')
 
 
-# In[737]:
+# In[1]:
 
 
 def put_away_input(inp, day, overwrite=False):
@@ -32,12 +32,14 @@ def put_away_input(inp, day, overwrite=False):
         f.write(inp)
 
 
-# In[738]:
+# In[19]:
 
 
 def read_input(day):
-    with open(f"inputs/inp_day_{day}.txt", "r") as f:
+    filename = f"inputs/inp_day_{day}.txt"
+    with open(filename, "r") as f:
         inp = f.read()
+    print(f"Reading {filename}.")
     return inp
 
 
@@ -2404,7 +2406,7 @@ aoc_15_2()
 
 # # 16
 
-# In[1454]:
+# In[3]:
 
 
 day = 16
@@ -2412,7 +2414,7 @@ day = 16
 inp = read_input(day)
 
 
-# In[1292]:
+# In[4]:
 
 
 TEST_INP = """class: 1-3 or 5-7
@@ -2431,21 +2433,22 @@ nearby tickets:
 
 # ## 16.1
 
-# In[1377]:
+# In[5]:
 
 
 get_ipython().system(' pip install dataclasses')
 
 
-# In[1461]:
+# In[6]:
 
 
 import itertools as it
 import re
 from dataclasses import dataclass
+from typing import *
 
 
-# In[1508]:
+# In[7]:
 
 
 @dataclass
@@ -2462,7 +2465,7 @@ class Rule:
         return lolo <= n <= lohi or hilo <= n <= hihi
 
 
-# In[1490]:
+# In[8]:
 
 
 def parse_input(inp):
@@ -2480,7 +2483,7 @@ def parse_input(inp):
     return rules, my_ticket, other_tickets
 
 
-# In[1505]:
+# In[9]:
 
 
 def aoc_16_1(inp=inp):
@@ -2490,20 +2493,91 @@ def aoc_16_1(inp=inp):
     return sum(fail_all_rules)
 
 
-# In[1506]:
+# In[10]:
 
 
 assert aoc_16_1(TEST_INP) == 71
 
 
-# In[1507]:
+# In[11]:
 
 
 aoc_16_1()
 
 
-# In[ ]:
+# ## 16.2
+
+# In[31]:
 
 
+TEST_INP2 = """class: 0-1 or 4-19
+row: 0-5 or 8-19
+seat: 0-13 or 16-19
 
+your ticket:
+11,12,13
+
+nearby tickets:
+3,9,18
+15,1,5
+5,14,9"""
+
+
+# In[122]:
+
+
+from functools import reduce
+
+
+# In[36]:
+
+
+def check_ticket(ticket, rules):
+    return all(any(rule.check(n) for rule in rules) for n in ticket)
+
+
+# In[79]:
+
+
+def sort_rules(rules: Tuple[Rule], valid_tickets: Tuple[Tuple[int]], verbose: bool = False) -> Tuple[Rule]:
+    rule_dict = {rule.name: rule for rule in rules}
+    sorted_rules = {idx: None for idx, _ in enumerate(rules)}
+    while rule_dict:
+        for idx, nums in enumerate(zip(*valid_tickets)):
+            if sorted_rules[idx] is not None:
+                continue
+            matches = [rule for rule in rule_dict.values() if all(rule.check(n) for n in nums)]
+            if len(matches) == 1:
+                sorted_rules[idx] = rule_dict.pop(matches[0].name)
+                if verbose:
+                    print(f"Found rule {sorted_rules[idx].name} for idx {idx}.")
+    return sorted_rules
+
+
+# In[126]:
+
+
+def product(iterable):
+    return reduce(lambda a, b: a * b, iterable, 1)
+
+
+# In[131]:
+
+
+def aoc_16_2(inp=inp):
+    rules, my_ticket, other_tickets = parse_input(inp)
+    assert check_ticket(my_ticket, rules), "My ticket is not valid!"
+    valid_other_tickets = tuple(ticket for ticket in other_tickets
+                                if check_ticket(ticket, rules))
+    sorted_rules = sort_rules(rules, valid_other_tickets, verbose=True)
+    dep_values = (my_ticket[idx]
+                  for idx, rule in sorted_rules.items()
+                  if rule.name.startswith("departure"))
+    return product(dep_values)
+
+
+# In[132]:
+
+
+aoc_16_2()
 
