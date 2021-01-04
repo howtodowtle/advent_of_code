@@ -3,19 +3,19 @@
 
 # # Setup
 
-# In[136]:
+# In[1]:
 
 
 get_ipython().system(' jupyter nbconvert --to python Advent_of_Code_2020.ipynb')
 
 
-# In[736]:
+# In[2]:
 
 
 get_ipython().system(' mkdir -p inputs')
 
 
-# In[1]:
+# In[3]:
 
 
 def put_away_input(inp, day, overwrite=False):
@@ -32,7 +32,7 @@ def put_away_input(inp, day, overwrite=False):
         f.write(inp)
 
 
-# In[19]:
+# In[4]:
 
 
 def read_input(day):
@@ -2580,4 +2580,216 @@ def aoc_16_2(inp=inp):
 
 
 aoc_16_2()
+
+
+# # 17
+
+# In[7]:
+
+
+inp = """...#...#
+..##.#.#
+###..#..
+........
+...##.#.
+.#.####.
+...####.
+..##...#
+"""
+
+
+# In[10]:
+
+
+day = 17
+# put_away_input(inp, day)
+inp = read_input(day)
+
+
+# In[11]:
+
+
+TEST_INP = """.#.
+..#
+###"""
+
+
+# ## 17.1
+
+# In[12]:
+
+
+import itertools as it
+
+
+# In[13]:
+
+
+from typing import *
+
+
+# In[19]:
+
+
+from collections import defaultdict
+
+
+# In[20]:
+
+
+Point = Tuple[int]
+
+
+# In[21]:
+
+
+Grid = DefaultDict[Point, bool]
+
+
+# In[49]:
+
+
+def parse_input(inp: str) -> Grid:
+    # col_num, row_num = x, y
+    # upper left = (0, 0, 0)  (arbitrary)
+    input_points = defaultdict(bool)
+    z = 0
+    for y, line in enumerate(inp.splitlines()):
+        for x, symbol in enumerate(line):
+            input_points[(x, y, z)] = symbol == "#"
+    return input_points
+
+
+# In[55]:
+
+
+def get_neighbors(point: Point) -> Tuple[Point]:
+    dimensions = len(point)
+    diffs = (-1, 0, 1)
+    coord_options = tuple(tuple(c + d for d in diffs)
+                          for c in point)
+    neighbors = tuple(p for p in it.product(*coord_options)
+                      if tuple(p) != point)
+    expected = pow(3, dimensions) - 1
+    assert len(neighbors) == expected, f"Found {len(neighbors)} neighbors, expected {expected}."
+    return neighbors
+
+
+# In[28]:
+
+
+def count_active_neighbors(point: Point, grid: Grid) -> int:
+    return sum(1 for neighbor in get_neighbors(point)
+               if grid.get(neighbor))
+
+
+# In[53]:
+
+
+pow(3, 4)
+
+
+# In[37]:
+
+
+def extend_grid(grid: Grid) -> Tuple[Point]:
+    """Returns a tuple of all Points within a grid plus 1 dimension in each direction."""
+    min_dims, max_dims = tuple(map(min, zip(*grid))), tuple(map(max, zip(*grid)))
+    return tuple(p for p in it.product(*tuple(tuple(range(mi - 1, ma + 2))
+                                              for mi, ma in zip(min_dims, max_dims))))
+
+
+# In[46]:
+
+
+def step(grid: Grid) -> Grid:
+    """
+    If a cube is active and exactly 2 or 3 of its neighbors are also active, the cube remains active. Otherwise, the cube becomes inactive.
+    If a cube is inactive but exactly 3 of its neighbors are active, the cube becomes active. Otherwise, the cube remains inactive.
+    """
+    new_grid = grid.copy()
+    potential_cubes = extend_grid(grid)
+    for cube in potential_cubes:
+        status = grid[cube]
+        n_active_neighbors = count_active_neighbors(cube, grid)
+        if not (status is True and n_active_neighbors in (2, 3)):
+            new_grid[cube] = False
+        if status is False and n_active_neighbors == 3:
+            new_grid[cube] = True
+    return new_grid
+
+
+# In[41]:
+
+
+def aoc_17_1(inp: str = inp, verbose: bool = False) -> int:
+    grid = parse_input(inp)
+    for r in range(6):
+        if verbose:
+            print(f"Before round {r + 1}: {grid}.")
+        grid = step(grid)
+    return sum(1 for cube in grid if grid.get(cube))
+
+
+# In[44]:
+
+
+assert aoc_17_1(TEST_INP) == 112
+
+
+# In[45]:
+
+
+aoc_17_1()
+
+
+# ## 17.2
+
+# __Basically the same solution as 17.1:__
+# - `Point` and `Grid` still work in 4D
+# - so do `get_neighbors` (just make the assert depend on the dimensions), `count_active_neighbors` and `extend_grid`
+# - only adjustment: during parsing, add dimension w with value 0
+
+# In[48]:
+
+
+def parse_input_2(inp: str) -> Grid:
+    # col_num, row_num = x, y
+    # upper left = (0, 0, 0, 0)  (arbitrary)
+    input_points = defaultdict(bool)
+    z = w = 0
+    for y, line in enumerate(inp.splitlines()):
+        for x, symbol in enumerate(line):
+            input_points[(x, y, z, w)] = symbol == "#"
+    return input_points
+
+
+# In[56]:
+
+
+def aoc_17_2(inp: str = inp, verbose: bool = False) -> int:
+    grid = parse_input_2(inp)
+    for r in range(6):
+        if verbose:
+            print(f"Before round {r + 1}: {grid}.")
+        grid = step(grid)
+    return sum(1 for cube in grid if grid.get(cube))
+
+
+# In[57]:
+
+
+assert aoc_17_2(TEST_INP) == 848
+
+
+# In[58]:
+
+
+aoc_17_2()
+
+
+# In[ ]:
+
+
+
 
