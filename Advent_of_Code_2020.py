@@ -2788,6 +2788,208 @@ assert aoc_17_2(TEST_INP) == 848
 aoc_17_2()
 
 
+# # 18
+
+# In[5]:
+
+
+TEST_INP = """1 + 2 * 3 + 4 * 5 + 6
+1 + (2 * 3) + (4 * (5 + 6))
+2 * 3 + (4 * 5)
+5 + (8 * 3 + 9 + 3 * 4 * 3)
+5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))
+((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2
+"""
+
+
+# In[6]:
+
+
+TEST_SOL = (71, 51, 26, 437, 12240, 13632)
+
+
+# In[7]:
+
+
+day = 18
+# put_away_input(inp, day)
+inp = read_input(day)
+
+
+# In[8]:
+
+
+from typing import *
+
+
+# ## 18.1
+
+# In[9]:
+
+
+class Operator:
+    def __init__(self, name):
+        self.name = name
+    
+    def __repr__(self):
+        return self.name
+    
+    def __call__(self, a, b):
+        if self.name == "+":
+            return a + b
+        elif self.name == "*":
+            return a * b
+        else:
+            raise
+
+
+# In[10]:
+
+
+def parse_line_without_par(line: str) -> Tuple[Iterator]:
+    parts = line.split(" ")
+    nums = (int(n) for n in parts[::2])
+    ops = (Operator(o) for o in parts[1::2])
+    return nums, ops
+
+
+# In[11]:
+
+
+def calculate_line(line: str, verbose: bool = False) -> int:
+    while "(" in line or ")" in line:
+        if verbose: print(line)
+        line = solve_inside_parenthesis(line)
+    if verbose: print(line)
+    nums, ops = parse_line_without_par(line)
+    result = next(ops)(next(nums), next(nums))
+    for op in ops:
+        result = op(result, next(nums))
+    return result
+
+
+# In[12]:
+
+
+def solve_inside_parenthesis(line: str) -> str:
+    for idx, v in enumerate(line):
+        if v == "(":
+            ls = idx
+        elif v == ")":
+            rs = idx
+            inside = line[ls + 1 : rs]
+            evaluated = calculate_line(inside)
+            return line[:ls] + str(evaluated) + line[rs+1:]
+
+
+# In[13]:
+
+
+for line, sol in zip(TEST_INP.splitlines(), TEST_SOL):
+    assert calculate_line(line) == sol
+
+
+# In[14]:
+
+
+def aoc_18_1(inp: str = inp, verbose: bool = False) -> int:
+    return sum(calculate_line(line) for line in inp.splitlines())
+
+
+# In[15]:
+
+
+aoc_18_1()
+
+
+# ## 18.2
+
+# In[16]:
+
+
+TEST_SOL_2 = (231, 51, 46, 1445, 669060, 23340)
+
+
+# In[65]:
+
+
+from functools import reduce
+
+
+# In[66]:
+
+
+def solve_inside_parenthesis_2(line: str) -> str:
+    for idx, v in enumerate(line):
+        if v == "(":
+            ls = idx
+        elif v == ")":
+            rs = idx
+            inside = line[ls + 1 : rs]
+            evaluated = calculate_line_2(inside)
+            return line[:ls] + str(evaluated) + line[rs+1:]
+
+
+# In[67]:
+
+
+def solve_addition(line: str) -> str:
+    for idx, v in enumerate(line):
+        if v == "+":
+            try:
+                elements = [el.replace("(", "").replace(")", "") for el in line.split(" ")]
+                if "+" in elements:
+                    plus_idx = elements.index("+")
+                    left, right = (int(elements[plus_idx + offset]) for offset in (-1, 1))
+                    return " ".join(elements[: plus_idx - 1] + [str(left + right)] + elements[plus_idx + 2:])
+                else:
+                    return str(left + right)
+            except:
+                import pdb; pdb.set_trace()
+    return line
+
+
+# In[68]:
+
+
+def calculate_line_2(line: str, verbose: bool = False) -> int:
+    while "(" in line or ")" in line:
+        if verbose: print(line)
+        line = solve_inside_parenthesis_2(line)
+    while "+" in line:
+        line = solve_addition(line)
+    nums, _ = tuple(tuple(x) for x in parse_line_without_par(line))
+    return reduce(lambda a, b: a * b, nums, 1)
+
+
+# In[70]:
+
+
+for line, sol in zip(TEST_INP.splitlines(), TEST_SOL_2):
+    assert calculate_line_2(line) == sol
+
+
+# In[71]:
+
+
+def aoc_18_2(inp: str = inp, verbose: bool = False) -> int:
+    return sum(calculate_line_2(line) for line in inp.splitlines())
+
+
+# In[72]:
+
+
+aoc_18_2()
+
+
+# Ugly. :/
+
+# In[ ]:
+
+
+
+
+
 # In[ ]:
 
 
